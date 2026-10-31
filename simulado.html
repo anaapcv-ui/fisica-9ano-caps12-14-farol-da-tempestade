@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado · Farol da Tempestade · Física 9º</title>
+<style>
+  :root{--fundo:#0b1626;--fundo2:#13223a;--borda:#233654;--borda2:#34507a;--ambar:#ffb547;--ciano:#4de1ff;--verde:#4ade80;--vermelho:#e8404f;--azul:#0a1733;--texto:#e6eef8;--cinza:#9fb0c8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Verdana,system-ui,Arial,sans-serif;font-size:17px;background:radial-gradient(900px 420px at 50% -10%,rgba(77,225,255,.12),transparent 60%),repeating-linear-gradient(115deg,rgba(255,255,255,.018) 0 2px,transparent 2px 26px),var(--fundo);color:var(--texto);line-height:1.6;padding-bottom:60px}
+  header{background:linear-gradient(120deg,#071029,#0a1733);padding:26px 18px;text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.5);border-bottom:6px solid var(--vermelho)}
+  header .selo{font-family:'Lucida Console',Consolas,monospace;font-size:.76rem;letter-spacing:3px;color:#c9d6f5;text-transform:uppercase}
+  header h1{font-family:Georgia,serif;font-size:1.55rem;margin:6px 0 2px}
+  header p{color:#dbe4fa;font-size:.92rem}
+  .wrap{max-width:820px;margin:0 auto;padding:16px}
+  .barra-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+  .barra-nav a{background:var(--fundo2);color:var(--texto);text-decoration:none;padding:7px 12px;border-radius:20px;font-size:.85rem;border:1px solid var(--borda)}
+  .barra-nav a.on{background:var(--vermelho);color:#fff;font-weight:bold}
+  .intro{background:var(--fundo2);border:1px solid var(--borda);border-radius:14px;padding:16px;margin-bottom:16px}
+  .intro h2{font-family:Georgia,serif;color:#ff9aa5;font-size:1.12rem;margin-bottom:8px}
+  .painel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;background:var(--fundo2);border:1px solid var(--borda);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:.85rem}
+  .painel .btns{display:flex;gap:6px;flex-wrap:wrap}
+  button{cursor:pointer;font-family:inherit}
+  .mini{background:var(--fundo);color:var(--texto);border:1px solid var(--borda2);border-radius:8px;padding:6px 10px;font-size:.8rem}
+  .codigo{background:linear-gradient(120deg,#0d2b1d,#155a36);border:2px solid var(--verde);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px;display:none;position:sticky;top:0;z-index:5}
+  .codigo.show{display:block}
+  .codigo .cod{font-family:Consolas,'Courier New',monospace;font-size:1.8rem;font-weight:bold;letter-spacing:3px;color:#a6f0c4;margin:6px 0}
+  .progresso{height:10px;background:var(--borda);border-radius:6px;overflow:hidden;margin-bottom:16px}
+  .progresso div{height:100%;background:var(--vermelho);width:0;transition:width .3s}
+  .q{background:var(--fundo2);border:1px solid var(--borda);border-radius:16px;padding:16px;margin-bottom:14px}
+  .q .num{font-family:Consolas,monospace;color:#ff9aa5;font-weight:bold;font-size:.8rem;letter-spacing:1px;text-transform:uppercase}
+  .q .tipo{float:right;font-size:.7rem;color:#fff;border-radius:10px;padding:2px 8px;background:#2a3a5a}
+  .q .tipo.som{background:#5a2a7a}.q .tipo.rom{background:#1f5a4a}
+  .q h3{font-size:1.02rem;margin:6px 0 10px;font-weight:600}
+  .afirm{background:#0f1b2e;border-left:3px solid var(--borda2);padding:8px 12px;margin:6px 0;border-radius:0 8px 8px 0;font-size:.95rem}
+  .afirm.ok{border-left-color:var(--verde)}.afirm.no{border-left-color:#777;color:#aab}
+  .alt{display:block;background:#0f1b2e;border:1px solid var(--borda2);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer}
+  .alt:hover{border-color:#ff9aa5}
+  .alt input{margin-right:8px}
+  .alt.sel{border-color:#ff9aa5;background:#33141c}
+  .alt.certa{border-color:var(--verde);background:#0d2b1d}
+  .alt.errada{border-color:#5a5a5a;background:#181d27;color:#aab}
+  .alt.marcada-errada{border-color:var(--vermelho);background:#3a1420}
+  .exp{margin-top:8px;font-size:.88rem;padding:8px 10px;border-radius:8px;background:#0f1b2e;border-left:3px solid var(--ambar);display:none}
+  .exp.show{display:block}
+  .soma input{width:110px;padding:9px;border-radius:8px;border:1px solid var(--borda2);background:#0a1220;color:var(--texto);font-size:1.05rem;text-align:center}
+  .soma .lab{font-size:.85rem;color:var(--cinza);margin-left:8px}
+  .enviar{width:100%;background:var(--vermelho);color:#fff;border:none;border-radius:12px;padding:14px;font-size:1.05rem;font-weight:bold;margin:10px 0}
+  .enviar:disabled{background:#1f2d45;color:#7d8aa0;cursor:not-allowed}
+  .gab{background:var(--fundo2);border:1px dashed var(--ciano);border-radius:14px;padding:16px;margin:16px 0;display:none}
+  .gab.show{display:block}
+  .gab input{padding:9px;border-radius:8px;border:1px solid var(--borda2);background:#0a1220;color:var(--texto);font-size:1rem;width:180px;text-transform:uppercase}
+  .gab button{background:var(--ciano);color:#03222b;border:none;border-radius:8px;padding:9px 14px;font-weight:bold;margin-left:6px}
+  .gab .msg{margin-top:8px;font-size:.9rem}
+  .fim{background:linear-gradient(120deg,#0d2b1d,#12402a);border:2px solid var(--verde);border-radius:16px;padding:18px;margin-top:18px;text-align:center}
+  .fim h3{color:#a6f0c4;margin-bottom:8px}
+  .fim a{display:inline-block;margin-top:8px;background:var(--verde);color:#05230f;text-decoration:none;font-weight:bold;padding:11px 20px;border-radius:10px}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(8,14,24,.97);z-index:50;align-items:center;justify-content:center;padding:16px}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--fundo2);border:1px solid var(--ciano);border-radius:14px;padding:22px;max-width:440px;text-align:center}
+  .modal p{margin-bottom:14px}
+  .modal .big{font-size:2.2rem}
+  .modal a,.modal button{display:inline-block;background:var(--ciano);color:#03222b;border:none;border-radius:8px;padding:10px 18px;font-weight:bold;text-decoration:none}
+  .rodape{text-align:center;color:var(--cinza);font-size:.8rem;margin-top:24px}
+</style>
+</head>
+<body>
+<header>
+  <div class="selo">Colégio Coração Feliz · Física · 9º ano</div>
+  <h1>📝 Simulado — A Grande Tempestade</h1>
+  <p>30 questões no estilo vestibular · múltipla escolha, somatório e números romanos · Óptica (Cap. 12) e Eletrostática (Cap. 14) · Código SIM</p>
+</header>
+
+<div class="wrap">
+  <nav class="barra-nav" id="nav">
+    <a href="leitura-guiada.html">📖 Leitura Guiada</a>
+    <a href="quiz.html">🎯 Quiz</a>
+    <a href="resumo.html">🗺️ Resumo</a>
+    <a class="on" href="simulado.html">📝 Simulado</a>
+    <a href="index.html">🏠 Início</a>
+  </nav>
+
+  <div class="codigo" id="codigo"><div>Seu código de liberação</div><div class="cod" id="cod"></div><div id="codtxt"></div></div>
+
+  <div class="intro">
+    <h2>🌩️ Valendo: o farol aguenta a tempestade?</h2>
+    <p>Faça como se fosse a prova: <b>30 questões</b>, todas obrigatórias, no estilo vestibular. Nas de <b>somatório</b>, some os números das afirmativas corretas (ex.: se 01, 04 e 08 estão certas, digite 13). Nas de <b>números romanos</b>, leia as afirmativas I, II, III e IV e escolha a alternativa certa. Tenha papel e lápis por perto para as contas. Depois de enviar, as respostas travam e sai o código <b>SIM</b>.</p>
+  </div>
+
+  <div class="painel">
+    <span id="salvo">💾 Progresso salvo automaticamente.</span>
+    <div class="btns">
+      <button class="mini" onclick="exportar()">📥 Exportar</button>
+      <button class="mini" onclick="document.getElementById('imp').click()">📤 Importar</button>
+      <input type="file" id="imp" accept="application/json" style="display:none" onchange="importar(event)">
+      <button class="mini" onclick="pedirZerar()">🗑️ Zerar tudo</button>
+    </div>
+  </div>
+
+  <div class="progresso"><div id="barra"></div></div>
+  <div id="questoes"></div>
+  <button class="enviar" id="btn-enviar" onclick="enviar()" disabled>📨 Enviar simulado (responda todas)</button>
+
+  <div class="gab" id="gab">
+    <b>🔑 Gabarito comentado:</b> digite o código SIM que apareceu no topo.<br>
+    <input id="gab-in" placeholder="SIM-XX-YY"><button onclick="abrirGab()">Ver gabarito</button>
+    <div class="msg" id="gab-msg"></div>
+  </div>
+
+  <div class="fim" id="fim" style="display:none">
+    <h3>🏁 Você chegou ao topo do farol!</h3>
+    <p>Você passou pelos quatro materiais na ordem. Agora tudo fica aberto para revisar quantas vezes quiser até a prova.</p>
+    <a href="index.html">🏠 Voltar ao início</a>
+  </div>
+
+  <div class="rodape">Feito com carinho para o jovem aprendiz. 🗼 Boa prova!</div>
+</div>
+
+<div class="modal-bg" id="lock">
+  <div class="modal">
+    <div class="big">🔒</div>
+    <p><b>Esta etapa ainda está trancada.</b></p>
+    <p id="lock-txt">Para abrir o Simulado, leia o Resumo até o fim.</p>
+    <a href="index.html">Voltar ao início</a>
+  </div>
+</div>
+<div class="modal-bg" id="modal" style="background:rgba(0,0,0,.75)">
+  <div class="modal">
+    <p id="modal-txt"></p>
+    <button onclick="fecharModal()" id="modal-ok">Ok</button>
+    <button class="mini" onclick="fecharModal()" id="modal-cancel" style="display:none;margin-left:8px">Cancelar</button>
+  </div>
+</div>
+
+<script>
+/* ====== TRILHA COM CADEADOS (módulo comum do kit) ====== */
+var KIT='farol_tempestade_fis9';
+var TRILHA=[
+ {id:'leitura', chave:KIT+'_leitura_v1', nome:'Leitura Guiada', arquivo:'leitura-guiada.html', emoji:'📖'},
+ {id:'quiz', chave:KIT+'_quiz_v1', nome:'Quiz', arquivo:'quiz.html', emoji:'🎯'},
+ {id:'resumo', chave:KIT+'_resumo_v1', nome:'Resumo', arquivo:'resumo.html', emoji:'🗺️'},
+ {id:'simulado', chave:KIT+'_simulado_v1', nome:'Simulado', arquivo:'simulado.html', emoji:'📝'}
+];
+function lerJSON(k){ try{ var s=localStorage.getItem(k); return s?JSON.parse(s):null; }catch(e){ return null; } }
+function trilhaLiberada(){ var t=lerJSON(KIT+'_trilha_v1'); return !!(t&&t.liberadoPelosPais); }
+function etapaConcluida(id){ var e=TRILHA.filter(function(t){return t.id===id;})[0]; var d=lerJSON(e.chave); return !!(d&&d.concluido); }
+function podeAbrir(id){ var idx=TRILHA.map(function(t){return t.id;}).indexOf(id); if(idx<=0||trilhaLiberada()) return true; return etapaConcluida(TRILHA[idx-1].id); }
+
+function checarTrava(){
+  if(podeAbrir('simulado')) return true;
+  var txt='Para abrir o Simulado, leia o Resumo até o fim e clique em “Li o resumo até o fim”.';
+  if(!etapaConcluida('quiz')) txt='Para abrir o Simulado, envie o Quiz e leia o Resumo até o fim.';
+  if(!etapaConcluida('leitura')) txt='Para abrir o Simulado, conclua a Leitura Guiada, envie o Quiz e leia o Resumo até o fim.';
+  document.getElementById('lock-txt').textContent=txt;
+  document.getElementById('lock').classList.add('show');
+  document.querySelector('.wrap').style.filter='blur(8px)';
+  document.querySelector('.wrap').setAttribute('aria-hidden','true');
+  return false;
+}
+
+/* ====== QUESTÕES (conteúdo do livro Callis Física 9 — Caps. 12 e 14) — correta guardada pelo id ====== */
+var Q=[
+ /* ---------- CAPÍTULO 12 — ÓPTICA ---------- */
+ {tipo:"mc",p:"Em um espetáculo, o termo “luz negra” costuma ser usado, mas o livro lembra que a coloração negra é justamente a ausência de luz e que a cor de um corpo é dada pela luz que ele predominantemente reflete. Uma bandeira que, sob a luz do Sol, apresenta faixas vermelhas e brancas é iluminada por uma luz monocromática azul. As faixas serão vistas, respectivamente:",alts:[
+  {id:"a",t:"negras e azuis.",ok:true,e:"A faixa vermelha absorve a luz azul e não há vermelho para refletir: fica negra. A faixa branca reflete todas as cores, então devolve o azul: fica azul."},
+  {id:"b",t:"vermelhas e brancas.",e:"Essas são as cores sob a luz branca do Sol, que tem todas as cores; sob luz só azul, tudo muda."},
+  {id:"c",t:"azuis e brancas.",e:"O branco não pode aparecer branco se só chega luz azul; e a faixa vermelha não reflete azul."},
+  {id:"d",t:"totalmente negras.",e:"A faixa branca reflete a luz azul que recebe, então é vista azul."}]},
+ {tipo:"mc",p:"Um feixe de raios de luz paralelos entre si incide em quatro superfícies. Na superfície 1, os raios voltam ao meio de origem continuando paralelos; na 2, voltam em direções desordenadas; na 3, atravessam a superfície e seguem paralelos; na 4, são absorvidos. Pode-se concluir que:",alts:[
+  {id:"a",t:"1 é rugosa; 2 é muito bem polida; 3 é de um corpo preto; 4 separa dois meios transparentes.",e:"Está tudo trocado: superfície rugosa causa reflexão difusa (caso 2), não regular."},
+  {id:"b",t:"1 é muito bem polida; 2 é rugosa; 3 separa dois meios transparentes; 4 é de um corpo de superfície preta.",ok:true,e:"Regular (1) = polida; difusa (2) = rugosa; atravessar (3) = meios transparentes; absorver quase tudo (4) = superfície preta."},
+  {id:"c",t:"1 separa dois meios transparentes; 2 é rugosa; 3 é muito bem polida; 4 é de um corpo preto.",e:"Na superfície 1 a luz volta (reflexão); ela não atravessa."},
+  {id:"d",t:"1 é muito bem polida; 2 separa dois meios transparentes; 3 é rugosa; 4 é de um corpo preto.",e:"Na superfície 2 a luz volta desordenada (difusa, rugosa); na 3 ela atravessa (meios transparentes)."}]},
+ {tipo:"rom",p:"Sobre a natureza da luz, analise as afirmativas:",itens:[
+  {n:"I",t:"A luz é a parte da radiação eletromagnética que está no espectro visível e pode se propagar inclusive no vácuo.",ok:true,e:"Correta: é a definição do livro."},
+  {n:"II",t:"A radiação ultravioleta tem frequência logo abaixo do limite mínimo visível, aquém da cor vermelha.",e:"Errada: abaixo do mínimo, aquém do vermelho, está o infravermelho. O ultravioleta fica além do violeta."},
+  {n:"III",t:"As radiações eletromagnéticas não visíveis foram descobertas em 1800 por William Herschel.",ok:true,e:"Correta: Herschel usou um prisma e termômetros e percebeu uma radiação além do vermelho."},
+  {n:"IV",t:"A Óptica geométrica é a parte da Óptica que investiga a natureza da luz.",e:"Errada: quem investiga a natureza da luz é a Óptica física; a geométrica estuda a propagação."}],
+  alts:[{id:"a",t:"Apenas I e III.",ok:true,e:"I e III estão corretas; II e IV estão erradas."},{id:"b",t:"Apenas II e IV.",e:"II e IV são justamente as erradas."},{id:"c",t:"Apenas I, II e III.",e:"A II está errada (troca infravermelho por ultravioleta)."},{id:"d",t:"Apenas I, III e IV.",e:"A IV está errada (a natureza da luz é da Óptica física)."}]},
+ {tipo:"som",p:"Sobre fontes de luz e a representação da luz, some os números das afirmativas corretas:",itens:[
+  {v:1,t:"O Sol é uma fonte primária de luz, pois produz luz própria.",ok:true,e:"Correta: fonte primária = corpo luminoso."},
+  {v:2,t:"A Lua é uma fonte secundária de luz (corpo iluminado), pois apenas transmite a luz que recebe do Sol.",ok:true,e:"Correta: é o exemplo do livro de fonte secundária."},
+  {v:4,t:"A luz da maioria dos faróis forma um feixe cônico divergente.",ok:true,e:"Correta: os raios se espalham, afastando-se uns dos outros."},
+  {v:8,t:"Um raio de luz pode ser representado graficamente por um segmento de reta.",ok:true,e:"Correta: raios e feixes são representados por segmentos de reta."},
+  {v:16,t:"A luz policromática é formada por um único comprimento de onda.",e:"Errada: um único comprimento de onda = monocromática; policromática tem dois ou mais (como a luz branca)."}]},
+ {tipo:"mc",p:"Segundo o livro, as cores primárias da luz, cujas misturas podem originar diversas outras cores e tonalidades, são:",alts:[
+  {id:"a",t:"vermelha, amarela e azul.",e:"Pegadinha clássica! Para a LUZ, as primárias são azul, vermelha e verde."},
+  {id:"b",t:"azul, vermelha e verde.",ok:true,e:"É o que o livro afirma na classificação da luz."},
+  {id:"c",t:"branca, preta e cinza.",e:"Branco é a soma das cores e preto é a ausência de luz refletida; não são primárias."},
+  {id:"d",t:"violeta, anil e laranja.",e:"São cores do espectro, mas não as primárias da luz."}]},
+ {tipo:"mc",p:"A luz se propaga com mais rapidez no vácuo do que na água porque:",alts:[
+  {id:"a",t:"na água a luz sofre sempre reflexão total.",e:"Reflexão total não é o motivo; a luz atravessa a água."},
+  {id:"b",t:"o vácuo é um meio opaco.",e:"O vácuo não impede a passagem da luz; pelo contrário."},
+  {id:"c",t:"a água tem partículas que dificultam a passagem da luz, e o vácuo não tem nenhuma partícula.",ok:true,e:"É a explicação do livro: sem partículas, a luz se propaga com mais facilidade e rapidez."},
+  {id:"d",t:"no vácuo a luz se transforma em radiação infravermelha.",e:"A luz não muda de tipo de radiação por estar no vácuo."}]},
+ {tipo:"som",p:"Sobre a refração da luz, some os números das afirmativas corretas:",itens:[
+  {v:1,t:"Refração é o fenômeno em que a luz, ao passar de um meio para outro, sofre variação em sua velocidade.",ok:true,e:"Correta: é a definição do livro."},
+  {v:2,t:"Se a luz incidir perpendicularmente à superfície de separação, ela obrigatoriamente sofrerá desvio na sua direção.",e:"Errada: o desvio ocorre quando o ângulo de incidência é oblíquo; perpendicular, não desvia."},
+  {v:4,t:"A refração explica por que uma piscina parece mais rasa do que é na realidade.",ok:true,e:"Correta: exemplo do livro."},
+  {v:8,t:"Nas miragens do asfalto quente, camadas de ar com temperaturas diferentes comportam-se como se fossem meios diferentes.",ok:true,e:"Correta: por isso a luz sofre refrações e reflexões e parece haver poças d’água."},
+  {v:16,t:"Na refração, a luz volta para o mesmo meio de onde veio.",e:"Errada: voltar ao mesmo meio é reflexão."}]},
+ {tipo:"mc",p:"Em 1666, Isaac Newton mostrou que a luz branca, ao atravessar um prisma, emerge colorida, formando um espectro de sete cores. O mesmo fenômeno, que acontece naturalmente nas gotas de água das nuvens e forma o arco-íris, é chamado de:",alts:[
+  {id:"a",t:"reflexão difusa.",e:"A reflexão difusa espalha raios em direções desordenadas, mas não separa as cores."},
+  {id:"b",t:"difração.",e:"O livro cita a difração para fendas muito pequenas (como as do CD), não para o prisma e o arco-íris."},
+  {id:"c",t:"absorção.",e:"Absorção é a luz sendo “retida” pela superfície."},
+  {id:"d",t:"dispersão da luz.",ok:true,e:"Em meios dispersivos, cada cor sofre refração diferente e as cores se separam."}]},
+ {tipo:"mc",p:"Vemos o céu azul durante o dia porque:",alts:[
+  {id:"a",t:"as partículas da atmosfera espalham com mais eficiência as luzes violeta e azul, e os olhos percebem melhor o azul.",ok:true,e:"É o espalhamento Rayleigh, explicado no livro."},
+  {id:"b",t:"o Sol emite apenas luz azul.",e:"A luz solar é branca (policromática), formada por várias cores."},
+  {id:"c",t:"a água dos oceanos reflete a cor azul para o céu.",e:"O livro explica o céu azul pelo espalhamento na atmosfera."},
+  {id:"d",t:"a atmosfera absorve todas as cores, menos o vermelho.",e:"Se sobrasse só o vermelho, o céu seria avermelhado — o que acontece no pôr do sol por outro motivo."}]},
+ {tipo:"rom",p:"Sobre a absorção da luz e a cor dos objetos, analise as afirmativas:",itens:[
+  {n:"I",t:"Um objeto que reflete raios de todas as cores visíveis é visto como branco.",ok:true,e:"Correta."},
+  {n:"II",t:"Um objeto que absorve quase toda a luz é enxergado como preto, embora mesmo superfícies pretas reflitam parte dos raios.",ok:true,e:"Correta: está na Questão invertida do livro."},
+  {n:"III",t:"A radiação absorvida por um objeto pode ser transformada em energia térmica.",ok:true,e:"Correta: é assim que o Sol aquece a Terra."},
+  {n:"IV",t:"São os raios absorvidos que determinam a cor com que enxergamos o objeto.",e:"Errada: são os raios REFLETIDOS que determinam a cor."}],
+  alts:[{id:"a",t:"Apenas I e II.",e:"A III também está correta."},{id:"b",t:"Apenas I, II e III.",ok:true,e:"Só a IV está errada."},{id:"c",t:"Apenas II, III e IV.",e:"A IV está errada e a I está correta."},{id:"d",t:"I, II, III e IV.",e:"A IV está errada: a cor vem da luz refletida."}]},
+ {tipo:"mc",p:"Considere: o vidro de uma janela comum, a neblina de uma manhã fria e um muro de tijolos. Quanto à propagação da luz, esses meios são, respectivamente:",alts:[
+  {id:"a",t:"translúcido, transparente e opaco.",e:"O vidro comum é transparente e a neblina é translúcida (exemplo do livro)."},
+  {id:"b",t:"transparente, opaco e translúcido.",e:"A neblina deixa passar parte da luz (translúcida) e o muro não deixa passar (opaco)."},
+  {id:"c",t:"transparente, translúcido e opaco.",ok:true,e:"Vidro: trajetória retilínea e visão nítida. Neblina: trajetória irregular. Muro: não deixa a luz passar."},
+  {id:"d",t:"opaco, translúcido e transparente.",e:"O vidro comum deixa ver com nitidez (transparente); o muro é opaco."}]},
+ {tipo:"som",p:"Sobre os princípios da óptica geométrica e a formação de sombras, some os números das afirmativas corretas:",itens:[
+  {v:1,t:"A formação de sombras ocorre devido ao princípio da propagação retilínea da luz.",ok:true,e:"Correta: é o que diz o livro."},
+  {v:2,t:"Pelo princípio da independência, dois raios de luz que se cruzam mudam de direção um por causa do outro.",e:"Errada: raios que se cruzam não se influenciam e seguem o seu caminho."},
+  {v:4,t:"A umbra é a região da sombra que não recebe luz diretamente da fonte primária.",ok:true,e:"Correta."},
+  {v:8,t:"Em um eclipse solar, as pessoas que estão na região de umbra veem um eclipse parcial.",e:"Errada: na umbra se vê o eclipse total; na penumbra, o parcial."},
+  {v:16,t:"A região de umbra da Terra, num eclipse solar total, ainda pode ser iluminada por outras fontes de luz, como a iluminação artificial das cidades.",ok:true,e:"Correta: a umbra é relativa à fonte primária (o Sol)."}]},
+ {tipo:"mc",p:"Um estudante quer fotografar com uma câmara escura de orifício um prédio de 12 m (1 200 cm) de altura, que está a 60 m (6 000 cm) da câmara. Para que a imagem tenha 4 cm de altura, a profundidade da câmara (distância do orifício até a imagem) deve ser de:",alts:[
+  {id:"a",t:"5 cm.",e:"Refaça: o/i = p/p’ → 1200/4 = 6000/p’ → 300 = 6000/p’ → p’ = 20 cm."},
+  {id:"b",t:"20 cm.",ok:true,e:"1200/4 = 300; 6000/p’ = 300 → p’ = 6000 ÷ 300 = 20 cm."},
+  {id:"c",t:"50 cm.",e:"Refaça a proporção: p’ = i · p ÷ o = 4 · 6000 ÷ 1200 = 20 cm."},
+  {id:"d",t:"200 cm.",e:"Confira as unidades e a divisão: 24 000 ÷ 1 200 = 20 cm."}]},
+ {tipo:"mc",p:"A imagem formada no fundo de uma câmara escura de orifício é, em relação ao objeto:",alts:[
+  {id:"a",t:"direita e maior.",e:"A imagem da câmara escura é invertida e menor."},
+  {id:"b",t:"direita e do mesmo tamanho.",e:"Essas são características do espelho plano, não da câmara escura."},
+  {id:"c",t:"invertida e menor, mantendo as proporções do objeto.",ok:true,e:"É o que o livro afirma; por isso ela foi precursora das câmeras e projetores."},
+  {id:"d",t:"invertida e sempre maior.",e:"A imagem é menor que o objeto real."}]},
+ {tipo:"rom",p:"Sobre os espelhos, analise as afirmativas:",itens:[
+  {n:"I",t:"Em um espelho plano, a distância do objeto ao espelho é igual à distância da imagem ao espelho.",ok:true,e:"Correta."},
+  {n:"II",t:"Em um espelho plano, a imagem fica mais distante do espelho do que o objeto.",e:"Errada: as distâncias são iguais."},
+  {n:"III",t:"Os espelhos convexos sempre formam imagens maiores que o objeto.",e:"Errada: no convexo a imagem é sempre menor e direita."},
+  {n:"IV",t:"Nos espelhos côncavos, as características da imagem dependem da posição do objeto em relação ao espelho.",ok:true,e:"Correta: a imagem pode ser maior, menor ou igual, direita ou invertida."}],
+  alts:[{id:"a",t:"Apenas I e IV.",ok:true,e:"Só I e IV estão corretas."},{id:"b",t:"Apenas I, II e IV.",e:"A II está errada."},{id:"c",t:"Apenas III e IV.",e:"A III está errada e a I está correta."},{id:"d",t:"Apenas II e III.",e:"II e III são justamente as erradas."}]},
+ {tipo:"mc",p:"Uma pessoa, diante de um espelho plano, levanta a mão direita. A imagem no espelho mostra:",alts:[
+  {id:"a",t:"uma mão esquerda, porque a imagem do espelho plano é enantiomorfa.",ok:true,e:"Enantiomorfa = simetricamente invertida em relação a um eixo (no livro: a mão esquerda vira a imagem de uma mão direita)."},
+  {id:"b",t:"uma mão direita menor, porque a imagem do espelho plano é reduzida.",e:"No espelho plano, a imagem tem o mesmo tamanho do objeto."},
+  {id:"c",t:"uma mão de cabeça para baixo, porque a imagem é invertida verticalmente.",e:"Imagem de cabeça para baixo aparece, por exemplo, na câmara escura."},
+  {id:"d",t:"uma mão direita igual, sem nenhuma inversão.",e:"O espelho plano troca esquerda e direita (enantiomorfismo)."}]},
+ {tipo:"mc",p:"Um estudante está a 2,0 m de um espelho plano e caminha 0,5 m em direção a ele. Depois disso, a distância entre o estudante e a sua imagem passa a ser:",alts:[
+  {id:"a",t:"1,5 m.",e:"1,5 m é a distância do estudante até o espelho; a imagem está mais 1,5 m atrás do espelho."},
+  {id:"b",t:"2,5 m.",e:"Ele se aproximou: ficou a 1,5 m do espelho, não a 2,5 m."},
+  {id:"c",t:"3,0 m.",ok:true,e:"Ele fica a 2,0 − 0,5 = 1,5 m do espelho; a imagem fica 1,5 m atrás. Total: 1,5 + 1,5 = 3,0 m."},
+  {id:"d",t:"4,0 m.",e:"4,0 m era a distância antes de ele andar (2,0 + 2,0)."}]},
+ {tipo:"som",p:"Sobre as lentes e o olho humano, some os números das afirmativas corretas:",itens:[
+  {v:1,t:"Lentes de bordas finas geralmente são convergentes.",ok:true,e:"Correta."},
+  {v:2,t:"A lupa é um objeto que usa lente divergente.",e:"Errada: a lupa usa lente convergente."},
+  {v:4,t:"O olho mágico das portas usa lente divergente, que forma imagens direitas, menores e virtuais e aumenta o campo visual.",ok:true,e:"Correta: é o exemplo do livro."},
+  {v:8,t:"A imagem projetada na retina é menor e invertida, e depois é interpretada e ajustada pelo cérebro.",ok:true,e:"Correta: o olho funciona de forma semelhante a uma câmara escura."},
+  {v:16,t:"Na retina, os cones determinam as cores dos objetos e os bastonetes, a intensidade da luz.",ok:true,e:"Correta: “respectivamente”, como diz o livro."}]},
+ {tipo:"rom",p:"Sobre os distúrbios da visão, analise as afirmativas:",itens:[
+  {n:"I",t:"A pessoa com hipermetropia enxerga com nitidez os objetos distantes, mas tem dificuldade de ver os próximos.",ok:true,e:"Correta."},
+  {n:"II",t:"Na miopia, a imagem se forma antes da retina.",ok:true,e:"Correta."},
+  {n:"III",t:"A hipermetropia é corrigida com lentes divergentes.",e:"Errada: a hipermetropia é corrigida com lentes convergentes."},
+  {n:"IV",t:"A miopia é corrigida com lentes divergentes.",ok:true,e:"Correta."}],
+  alts:[{id:"a",t:"Apenas I e II.",e:"A IV também está correta."},{id:"b",t:"Apenas II e III.",e:"A III está errada."},{id:"c",t:"Apenas I, II e IV.",ok:true,e:"Só a III está errada."},{id:"d",t:"I, II, III e IV.",e:"A III está errada."}]},
+ /* ---------- CAPÍTULO 14 — ELETROSTÁTICA ---------- */
+ {tipo:"mc",p:"As palavras “elétron” e “eletricidade” derivam da palavra grega <i>elektron</i>, que significa:",alts:[
+  {id:"a",t:"raio.",e:"Raio é um fenômeno elétrico, mas não é o significado de <i>elektron</i>."},
+  {id:"b",t:"âmbar.",ok:true,e:"Tales de Mileto observou que o âmbar atritado atraía pequenos objetos."},
+  {id:"c",t:"faísca.",e:"Não é o significado dado pelo livro."},
+  {id:"d",t:"carga.",e:"Não é o significado dado pelo livro."}]},
+ {tipo:"rom",p:"Sobre a história da eletricidade apresentada no livro, analise as afirmativas:",itens:[
+  {n:"I",t:"Tales de Mileto observou que um pedaço de âmbar, ao ser atritado, atraía pequenos objetos.",ok:true,e:"Correta."},
+  {n:"II",t:"O termo “eletricidade” foi adotado em 1600 por William Gilbert.",ok:true,e:"Correta."},
+  {n:"III",t:"Em 1897, J. J. Thomson descobriu partículas com carga elétrica negativa, os elétrons.",ok:true,e:"Correta."},
+  {n:"IV",t:"Para Benjamin Franklin, o corpo que cede fluido elétrico, ficando com falta dele, é chamado de negativo.",e:"Errada: quem cede (fica com falta) é o positivo; quem recebe (fica com excesso) é o negativo."}],
+  alts:[{id:"a",t:"Apenas I e II.",e:"A III também está correta."},{id:"b",t:"Apenas I, II e III.",ok:true,e:"Só a IV está errada."},{id:"c",t:"Apenas II, III e IV.",e:"A IV está errada e a I está correta."},{id:"d",t:"I, II, III e IV.",e:"A IV inverte os nomes de Franklin."}]},
+ {tipo:"mc",p:"Um corpo inicialmente neutro perde 2,5 · 10¹² elétrons. Sendo e = 1,6 · 10⁻¹⁹ C, a carga adquirida pelo corpo é:",alts:[
+  {id:"a",t:"−4,0 · 10⁻⁷ C.",e:"O corpo PERDEU elétrons: a carga é positiva."},
+  {id:"b",t:"+4,0 · 10⁻⁶ C.",e:"Confira as potências: 10¹² · 10⁻¹⁹ = 10⁻⁷."},
+  {id:"c",t:"+1,6 · 10⁻⁷ C.",e:"Faltou multiplicar por 2,5: 2,5 · 1,6 = 4,0."},
+  {id:"d",t:"+4,0 · 10⁻⁷ C.",ok:true,e:"Q = +n · e = 2,5 · 10¹² · 1,6 · 10⁻¹⁹ = 4,0 · 10⁻⁷ C, positiva (falta de elétrons)."}]},
+ {tipo:"mc",p:"Um corpo apresenta carga Q = −8,0 · 10⁻¹⁶ C. Sendo e = 1,6 · 10⁻¹⁹ C, é correto afirmar que ele tem:",alts:[
+  {id:"a",t:"5,0 · 10³ elétrons em excesso.",ok:true,e:"n = 8,0 · 10⁻¹⁶ ÷ 1,6 · 10⁻¹⁹ = 5,0 · 10³. Carga negativa = excesso de elétrons."},
+  {id:"b",t:"5,0 · 10³ elétrons em falta.",e:"O número está certo, mas carga negativa indica EXCESSO de elétrons."},
+  {id:"c",t:"5,0 · 10⁴ elétrons em excesso.",e:"Confira as potências: 10⁻¹⁶ ÷ 10⁻¹⁹ = 10³."},
+  {id:"d",t:"5,0 · 10³ prótons em excesso.",e:"Prótons não são transferidos; o que muda é o número de elétrons."}]},
+ {tipo:"som",p:"Sobre as partículas do átomo e a carga elétrica, some os números das afirmativas corretas:",itens:[
+  {v:1,t:"Os nêutrons têm carga elétrica negativa.",e:"Errada: os nêutrons não apresentam carga."},
+  {v:2,t:"Os prótons passam facilmente de um átomo para outro, assim como os elétrons.",e:"Errada: os prótons ficam no núcleo; quem se move são os elétrons da eletrosfera."},
+  {v:4,t:"A carga elementar vale, em módulo, 1,6 · 10⁻¹⁹ C.",ok:true,e:"Correta."},
+  {v:8,t:"No Sistema Internacional, a unidade de carga elétrica é o coulomb (C).",ok:true,e:"Correta: homenagem a Charles Augustin Coulomb."},
+  {v:16,t:"O elétron é, com certeza, a partícula de menor carga elétrica que existe.",e:"Errada: hoje se sabe que há partículas com carga menor, como os quarks."}]},
+ {tipo:"mc",p:"Três pequenas esferas eletrizadas, A, B e C, são aproximadas duas a duas. Observa-se que A repele B e que B atrai C. Sabendo que C está eletrizada negativamente, os sinais de A e B são, respectivamente:",alts:[
+  {id:"a",t:"negativo e negativo.",e:"Se B fosse negativa, repeliria C (sinais iguais se repelem)."},
+  {id:"b",t:"positivo e negativo.",e:"A repele B, então A e B têm o mesmo sinal."},
+  {id:"c",t:"negativo e positivo.",e:"A repele B, então A e B têm o mesmo sinal."},
+  {id:"d",t:"positivo e positivo.",ok:true,e:"B atrai C (negativa) → B é positiva. A repele B → A também é positiva."}]},
+ {tipo:"mc",p:"Usando uma luva isolante, um estudante encosta uma esfera metálica A, com carga +16 nC, em uma esfera B idêntica e neutra. Em seguida, encosta B em uma esfera C, também idêntica e neutra. A carga final da esfera C é:",alts:[
+  {id:"a",t:"+16 nC.",e:"A carga é dividida a cada contato entre esferas idênticas."},
+  {id:"b",t:"+8 nC.",e:"+8 nC é a carga de B depois do primeiro contato; ela ainda é dividida com C."},
+  {id:"c",t:"+4 nC.",ok:true,e:"1º contato: (16 + 0) ÷ 2 = 8 → B = +8. 2º contato: (8 + 0) ÷ 2 = 4 → C = +4 nC."},
+  {id:"d",t:"−4 nC.",e:"No contato, os corpos ficam com cargas de mesmo sinal: positivo."}]},
+ {tipo:"rom",p:"Sobre condutores e isolantes, analise as afirmativas:",itens:[
+  {n:"I",t:"Nos condutores, as cargas elétricas se movimentam com relativa facilidade; os metais são exemplos.",ok:true,e:"Correta."},
+  {n:"II",t:"Corpos úmidos são exemplos de bons isolantes elétricos.",e:"Errada: o livro cita corpos úmidos como bons condutores."},
+  {n:"III",t:"Semicondutores são materiais que, em determinadas condições, podem se comportar como isolantes ou como condutores.",ok:true,e:"Correta."},
+  {n:"IV",t:"Supercondutores apresentam muita resistência à passagem de elétrons.",e:"Errada: em certas condições de temperatura, apresentam pouquíssima resistência."}],
+  alts:[{id:"a",t:"Apenas I e III.",ok:true,e:"Só I e III estão corretas."},{id:"b",t:"Apenas I, II e III.",e:"A II está errada."},{id:"c",t:"Apenas II e IV.",e:"II e IV são justamente as erradas."},{id:"d",t:"Apenas III e IV.",e:"A IV está errada e a I está correta."}]},
+ {tipo:"som",p:"Sobre os processos de eletrização, some os números das afirmativas corretas:",itens:[
+  {v:1,t:"Na eletrização por atrito, corpos de materiais diferentes, inicialmente neutros, ficam com cargas de mesmo valor e sinais opostos.",ok:true,e:"Correta."},
+  {v:2,t:"Na eletrização por contato, os corpos ficam eletrizados com cargas de mesmo sinal.",ok:true,e:"Correta."},
+  {v:4,t:"A eletrização por indução exige que o indutor encoste no induzido.",e:"Errada: a indução acontece sem a necessidade de contato."},
+  {v:8,t:"Se o indutor for afastado sem que o induzido tenha sido ligado à terra, o induzido volta a ficar completamente neutro.",ok:true,e:"Correta: os elétrons apenas se rearranjaram."},
+  {v:16,t:"Na eletrização, prótons são transferidos do corpo positivo para o corpo negativo.",e:"Errada: só elétrons são transferidos."}]},
+ {tipo:"mc",p:"Um condutor neutro, ligado à terra por um fio, tem um corpo isolante carregado NEGATIVAMENTE aproximado dele, sem contato. Durante o processo de eletrização do condutor, houve:",alts:[
+  {id:"a",t:"migração de elétrons da terra para o condutor, eletrizando-o negativamente.",e:"Com o indutor negativo, os elétrons do condutor são repelidos — eles saem, não entram."},
+  {id:"b",t:"migração de prótons da terra para o condutor, eletrizando-o positivamente.",e:"Prótons não se movem."},
+  {id:"c",t:"migração de elétrons do condutor para a terra, eletrizando-o positivamente.",ok:true,e:"O indutor negativo repele os elétrons do condutor, que escoam para a terra; o condutor fica positivo (sinal oposto)."},
+  {id:"d",t:"migração de elétrons do condutor para o corpo isolante, eletrizando-o positivamente.",e:"Na indução não há contato com o indutor; os elétrons vão para a terra."}]},
+ {tipo:"mc",p:"Uma esfera metálica neutra está suspensa por um fio isolante. Um bastão de material isolante, carregado positivamente, é posicionado perto da esfera, sem encostar nela. Observa-se que a esfera:",alts:[
+  {id:"a",t:"é repelida, porque se torna positivamente carregada.",e:"A esfera não recebe carga: não houve contato nem aterramento."},
+  {id:"b",t:"é atraída, porque se torna negativamente carregada.",e:"Sem contato e sem aterramento, a esfera continua neutra."},
+  {id:"c",t:"é atraída, porque ocorre um rearranjo dos elétrons na esfera, que continua neutra.",ok:true,e:"Os elétrons livres são atraídos para o lado do bastão; a esfera fica induzida (com regiões de sinais opostos), mas continua neutra."},
+  {id:"d",t:"é repelida, porque ocorre um rearranjo de prótons na esfera.",e:"Prótons não se movem; quem se rearranja são os elétrons."}]}
+];
+
+/* ====== EMBARALHAMENTO COM SEMENTE FIXA (mulberry32) — correta guardada pelo id ====== */
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+var rnd=mulberry32(310126914);
+Q.forEach(function(q){ if(q.alts){ var arr=q.alts.slice(); for(var i=arr.length-1;i>0;i--){ var j=Math.floor(rnd()*(i+1)); var tmp=arr[i]; arr[i]=arr[j]; arr[j]=tmp; } q.ordem=arr; } if(q.tipo==='som'){ q.soma=q.itens.filter(function(x){return x.ok;}).reduce(function(a,x){return a+x.v;},0); } });
+var OBJ=Q.length;
+
+/* ====== ESTADO ====== */
+var CHAVE=KIT+'_simulado_v1'; var mem={}; var estado=carregar();
+function carregar(){ try{ var s=localStorage.getItem(CHAVE); if(s) return JSON.parse(s);}catch(e){ if(mem[CHAVE]) return JSON.parse(mem[CHAVE]); } return {resp:{},enviado:false}; }
+function salvar(){ var s=JSON.stringify(estado); try{ localStorage.setItem(CHAVE,s);}catch(e){ mem[CHAVE]=s; } var d=new Date(); document.getElementById('salvo').textContent='💾 Salvo às '+d.toLocaleTimeString('pt-BR')+' de '+d.toLocaleDateString('pt-BR'); }
+var LETRAS='ABCDEFGHJKLMNPQRSTUVWXYZ';
+function gerarCodigo(ac){ var xx=(ac<10?'0':'')+ac; var yy=LETRAS[Math.floor(Math.random()*LETRAS.length)]+LETRAS[Math.floor(Math.random()*LETRAS.length)]; return 'SIM-'+xx+'-'+yy; }
+function respondida(i){ var r=estado.resp[i]; if(r===undefined||r===null||String(r).trim()==='') return false; return true; }
+function acertou(i){ var q=Q[i], r=estado.resp[i]; if(q.tipo==='som') return parseInt(r,10)===q.soma; var a=q.alts.filter(function(x){return x.id===r;})[0]; return !!(a&&a.ok); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+function render(){
+  var c=document.getElementById('questoes'); var h=''; var G=estado.gabarito;
+  Q.forEach(function(q,i){
+    var tipoTxt={mc:'Múltipla escolha',som:'Somatório',rom:'Números romanos'}[q.tipo];
+    h+='<div class="q" id="q'+i+'"><span class="tipo '+q.tipo+'">'+tipoTxt+'</span><div class="num">Questão '+(i+1)+' de '+Q.length+'</div><h3>'+q.p+'</h3>';
+    if(q.tipo==='som'||q.tipo==='rom'){
+      q.itens.forEach(function(it){ var lab=q.tipo==='som'? ('('+(it.v<10?'0':'')+it.v+') ') : (it.n+'. '); var cls='afirm'+(G?(it.ok?' ok':' no'):''); h+='<div class="'+cls+'">'+lab+it.t+(G?'<div class="exp show">'+(it.ok?'✅ ':'❌ ')+it.e+'</div>':'')+'</div>'; });
+    }
+    if(q.tipo==='som'){
+      var r=estado.resp[i]; var ok=G?acertou(i):null;
+      h+='<div class="soma" style="margin-top:10px">Soma: <input type="number" min="0" max="31" id="som'+i+'" value="'+(r!==undefined?esc(r):'')+'" '+(estado.enviado?'disabled':'')+' oninput="marcar('+i+',this.value)"><span class="lab">'+(G?(ok?'✅ Correto: '+q.soma:'❌ Você somou '+esc(r)+'; o certo é '+q.soma):'')+'</span></div>';
+    } else {
+      q.ordem.forEach(function(a,k){
+        var letra='abcd'[k]; var sel=estado.resp[i]===a.id; var cls='alt'+(sel?' sel':'');
+        if(G){ if(a.ok) cls+=' certa'; else if(sel) cls+=' marcada-errada'; else cls+=' errada'; }
+        h+='<label class="'+cls+'"><input type="radio" name="q'+i+'" value="'+a.id+'" '+(sel?'checked':'')+' '+(estado.enviado?'disabled':'')+' onchange="marcar('+i+',\''+a.id+'\')"> <b>'+letra+')</b> '+a.t+(G?'<div class="exp show">'+(a.ok?'✅ ':'')+a.e+'</div>':'')+'</label>';
+      });
+    }
+    h+='</div>';
+  });
+  c.innerHTML=h; atualizarBarra(); if(estado.enviado) mostrarEnviado();
+}
+function marcar(i,v){ if(estado.enviado) return; estado.resp[i]=v; salvar(); var q=document.getElementById('q'+i); if(Q[i].tipo==='mc'||Q[i].tipo==='rom'){ var labs=q.querySelectorAll('.alt'); for(var k=0;k<labs.length;k++){ labs[k].classList.toggle('sel', labs[k].querySelector('input').value===v); } } atualizarBarra(); }
+function atualizarBarra(){ var n=0; Q.forEach(function(q,i){ if(respondida(i)) n++; }); document.getElementById('barra').style.width=(n/Q.length*100)+'%'; var b=document.getElementById('btn-enviar'); if(!estado.enviado){ b.disabled=n<Q.length; b.textContent=n<Q.length?'📨 Enviar simulado ('+n+' de '+Q.length+' respondidas)':'📨 Enviar simulado'; } }
+function enviar(){
+  if(estado.enviado) return;
+  var ac=0; Q.forEach(function(q,i){ if(acertou(i)===true) ac++; });
+  estado.acertos=ac; estado.objetivas=OBJ; estado.codigo=gerarCodigo(ac); estado.enviado=true; estado.concluido=true; estado.concluidoEm=new Date().toISOString();
+  salvar(); render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function mostrarEnviado(){
+  var b=document.getElementById('btn-enviar'); b.disabled=true; b.textContent='✅ Simulado enviado — respostas travadas';
+  document.getElementById('codigo').classList.add('show'); document.getElementById('cod').textContent=estado.codigo;
+  document.getElementById('codtxt').textContent='Anote este código para os pais. Ele abre o gabarito comentado.';
+  document.getElementById('gab').classList.add('show'); document.getElementById('fim').style.display='block';
+}
+function abrirGab(){ var v=document.getElementById('gab-in').value.trim().toUpperCase(); var m=document.getElementById('gab-msg'); if(v===estado.codigo||v==='PAIS-77'){ estado.gabarito=true; salvar(); render(); document.getElementById('gab-msg').innerHTML='<span style="color:#a6f0c4">Gabarito liberado: '+estado.acertos+' acertos de '+OBJ+' questões.</span>'; } else { m.innerHTML='<span style="color:#ffb3bf">Código incorreto.</span>'; } }
+function exportar(){ var blob=new Blob([JSON.stringify(estado,null,2)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='simulado_farol-da-tempestade.json'; a.click(); }
+function importar(ev){ var f=ev.target.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){ try{ estado=JSON.parse(r.result); if(!estado.resp) estado.resp={}; salvar(); render(); mostrarModal('✅ Progresso importado!',false);}catch(e){ mostrarModal('❌ Arquivo inválido.',false);} }; r.readAsText(f); }
+var acaoZerar=null;
+function pedirZerar(){ acaoZerar=true; mostrarModal('Apagar as respostas deste Simulado? (Se ele já foi enviado, o código e a conclusão são mantidos.)',true); }
+function mostrarModal(txt,confirmar){ document.getElementById('modal-txt').innerHTML=txt; document.getElementById('modal').classList.add('show'); document.getElementById('modal-cancel').style.display=confirmar?'inline-block':'none'; document.getElementById('modal-ok').textContent=confirmar?'Sim, apagar':'Ok';
+  document.getElementById('modal-ok').onclick=function(){ if(confirmar&&acaoZerar){ if(!estado.enviado){ estado={resp:{},enviado:false}; salvar(); render(); } else { acaoZerar=null; mostrarModal('O Simulado já foi enviado: as respostas ficam travadas. Para refazer do zero, use “Zerar o kit inteiro” no Início.',false); return; } } acaoZerar=null; fecharModal(); }; }
+function fecharModal(){ document.getElementById('modal').classList.remove('show'); }
+
+if(checarTrava()){ render(); }
+
+</script>
+</body>
+</html>

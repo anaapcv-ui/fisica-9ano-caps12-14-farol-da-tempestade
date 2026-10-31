@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leitura Guiada · Farol da Tempestade · Física 9º</title>
+<style>
+  :root{
+    --fundo:#0b1626; --fundo2:#13223a; --borda:#233654; --borda2:#34507a;
+    --ambar:#ffb547; --ciano:#4de1ff; --coral:#ff5d73; --verde:#4ade80;
+    --vermelho:#ff5d73; --texto:#e6eef8; --cinza:#9fb0c8; --postit:#ffe39a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Verdana,system-ui,Arial,sans-serif;font-size:17px;background:
+    radial-gradient(700px 380px at 82% -8%,rgba(255,181,71,.20),transparent 62%),
+    radial-gradient(900px 420px at 10% -10%,rgba(77,225,255,.12),transparent 60%),
+    repeating-linear-gradient(115deg,rgba(255,255,255,.018) 0 2px,transparent 2px 26px),var(--fundo);
+    color:var(--texto);line-height:1.65;padding-bottom:60px}
+  header{background:linear-gradient(125deg,#0c3b26,#11543a 55%,#0c3b26);padding:26px 18px;text-align:center;
+    box-shadow:0 4px 18px rgba(0,0,0,.5);border-bottom:4px solid var(--verde)}
+  header .selo{font-family:'Lucida Console',Consolas,monospace;font-size:.76rem;letter-spacing:3px;color:#c8f5dc;text-transform:uppercase}
+  header h1{font-family:Georgia,'Times New Roman',serif;font-size:1.6rem;margin:6px 0 2px}
+  header p{color:#d6f0e1;font-size:.92rem}
+  .wrap{max-width:820px;margin:0 auto;padding:16px}
+  .barra-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+  .barra-nav a{background:var(--fundo2);color:var(--texto);text-decoration:none;padding:7px 12px;border-radius:20px;font-size:.85rem;border:1px solid var(--borda)}
+  .barra-nav a.on{background:var(--verde);color:#05230f;font-weight:bold}
+  .barra-nav a.lock{opacity:.5}
+  .intro{background:var(--fundo2);border:1px solid var(--borda);border-radius:14px;padding:16px;margin-bottom:16px}
+  .intro h2{font-family:Georgia,serif;color:var(--ambar);font-size:1.15rem;margin-bottom:8px}
+  .intro ol{margin:8px 0 0 20px}
+  .torre{display:flex;justify-content:center;gap:4px;margin:12px 0 4px;flex-wrap:wrap}
+  .torre span{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:bold;font-family:Consolas,monospace;border:1px solid var(--borda2);background:#0e1a2c;color:var(--cinza)}
+  .torre span.luz{border-color:var(--ambar)} .torre span.tem{border-color:var(--ciano)}
+  .torre span.ok{background:var(--verde);color:#05230f;border-color:var(--verde)}
+  .torre span.at{background:var(--ambar);color:#2b1a00;box-shadow:0 0 12px rgba(255,181,71,.7)}
+  .legenda{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:.8rem;justify-content:center}
+  .legenda span{padding:3px 10px;border-radius:12px;font-weight:bold}
+  .lg-c12{background:#3d2a08;color:var(--ambar)} .lg-c14{background:#0a3140;color:var(--ciano)}
+  .painel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+    background:var(--fundo2);border:1px solid var(--borda);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:.85rem}
+  .painel .btns{display:flex;gap:6px;flex-wrap:wrap}
+  button{cursor:pointer;font-family:inherit}
+  .mini{background:var(--fundo);color:var(--texto);border:1px solid var(--borda2);border-radius:8px;padding:6px 10px;font-size:.8rem}
+  .mini:hover{background:#1a2c48}
+  .parte{margin:26px 0 12px;padding:10px 14px;border-radius:12px;font-weight:bold;font-size:.95rem;letter-spacing:.3px;border:2px dashed var(--borda2);background:#0f1c30;font-family:'Lucida Console',Consolas,monospace}
+  .parte.c12{color:var(--ambar);border-color:var(--ambar)} .parte.c14{color:var(--ciano);border-color:var(--ciano)}
+  .bloco{background:var(--fundo2);border:1px solid var(--borda);border-radius:16px;margin-bottom:18px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.35)}
+  .bloco.travado{opacity:.55}
+  .bloco-cab{display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(90deg,#1a2d4c,#13223a);border-bottom:1px dashed var(--borda2)}
+  .bloco-cab .num{color:#2b1a00;font-weight:bold;width:44px;height:44px;border-radius:50% 50% 8px 8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Consolas,monospace}
+  .bloco.c12 .num{background:var(--ambar);box-shadow:0 0 14px rgba(255,181,71,.55)}
+  .bloco.c14 .num{background:var(--ciano);color:#03222b;box-shadow:0 0 14px rgba(77,225,255,.5)}
+  .bloco-cab h3{font-family:Georgia,serif;font-size:1.1rem;color:#fff}
+  .bloco-cab .porto{font-family:'Lucida Console',Consolas,monospace;font-size:.7rem;color:var(--cinza);letter-spacing:1px;text-transform:uppercase}
+  .bloco-corpo{padding:16px}
+  .texto p{margin-bottom:10px}
+  .texto ul{margin:0 0 10px 20px}
+  .texto li{margin-bottom:5px}
+  .texto .destaque{color:var(--ambar);font-weight:bold}
+  .texto .ci{color:var(--ciano);font-weight:bold}
+  .formula{display:block;text-align:center;font-family:Georgia,serif;font-size:1.25rem;background:#0e1a2c;border:1px solid var(--borda2);border-radius:10px;padding:8px;margin:6px 0 12px;color:#fff}
+  .olhar{background:#2b2512;border-left:3px solid var(--postit);padding:8px 12px;margin:0 0 10px;border-radius:0 8px 8px 0;font-size:.93rem}
+  .olhar b{color:var(--postit)}
+  .cadeado{padding:22px 16px;text-align:center;color:var(--cinza);font-size:.9rem}
+  .perg{background:#0f1b2e;border:1px solid var(--borda);border-radius:12px;padding:12px;margin-top:14px}
+  .perg.red{border-color:var(--vermelho);box-shadow:0 0 0 1px var(--vermelho)}
+  .perg .tag{display:inline-block;font-size:.66rem;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:10px;margin-bottom:6px}
+  .tag.conc{background:#0a3140;color:#bfefff}
+  .tag.apl{background:#3d2a08;color:#ffd79a}
+  .perg label{display:block;font-weight:600;margin-bottom:8px}
+  .perg textarea{width:100%;min-height:76px;background:#0a1220;color:var(--texto);border:1px solid var(--borda2);border-radius:8px;padding:9px;font-family:inherit;font-size:.98rem;resize:vertical}
+  .aviso{margin-top:8px;padding:9px 11px;border-radius:8px;font-size:.86rem;display:none}
+  .aviso.amarelo{display:block;background:#4a3a12;border:1px solid var(--ambar);color:#ffe7b5}
+  .aviso.vermelho{display:block;background:#4a1720;border:1px solid var(--vermelho);color:#ffc9d0}
+  .modelo{margin-top:10px;padding:10px 12px;background:#0d2b1d;border:1px solid var(--verde);border-radius:8px;font-size:.92rem;display:none}
+  .modelo.show{display:block}
+  .modelo .lab{color:#a6f0c4;font-weight:bold;font-size:.78rem;text-transform:uppercase;letter-spacing:1px}
+  .chk{margin-top:10px;font-size:.88rem}
+  .chk .item{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}
+  .chk .item span{flex:1;min-width:180px}
+  .chk .simnao button{border:1px solid var(--borda2);background:#0a1220;color:var(--texto);border-radius:6px;padding:4px 10px;margin-left:4px;font-size:.8rem}
+  .chk .simnao button.sim.ativo{background:var(--verde);border-color:var(--verde);color:#05230f}
+  .chk .simnao button.nao.ativo{background:var(--vermelho);border-color:var(--vermelho);color:#fff}
+  .conferir{margin-top:14px;background:var(--ambar);color:#2b1a00;border:none;border-radius:10px;padding:11px 18px;font-size:1rem;font-weight:bold;width:100%}
+  .conferir:disabled{background:#1f2d45;color:#7d8aa0;cursor:not-allowed}
+  .status-bloco{margin-top:10px;text-align:center;font-weight:bold;font-size:.95rem}
+  .prox{margin-top:12px;text-align:center}
+  .prox a{color:var(--ambar);text-decoration:none;font-weight:bold}
+  .peg{background:#3a1420;border:2px solid var(--vermelho);border-radius:16px;padding:16px;margin-top:20px}
+  .peg h3{color:#ffb3bf;margin-bottom:10px}
+  .peg ol{margin-left:20px}
+  .peg li{margin-bottom:7px}
+  .cobertura{background:var(--fundo2);border:1px solid var(--borda);border-radius:16px;padding:16px;margin-top:18px}
+  .cobertura h3{color:var(--ambar);margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;font-size:.85rem}
+  th,td{border:1px solid var(--borda);padding:7px 9px;text-align:left}
+  th{background:#1a2d4c}
+  .revisar{background:#3a2a06;border:2px solid var(--ambar);border-radius:16px;padding:16px;margin-top:18px}
+  .revisar h3{color:var(--ambar);margin-bottom:8px}
+  .revisar ul{margin-left:18px}
+  .relatorio{background:var(--fundo2);border:1px dashed var(--verde);border-radius:14px;padding:16px;margin-top:18px;font-size:.9rem}
+  .relatorio h3{color:var(--verde);margin-bottom:8px}
+  .trilha-fim{background:linear-gradient(120deg,#0d2b1d,#12402a);border:2px solid var(--verde);border-radius:16px;padding:18px;margin-top:18px;text-align:center}
+  .trilha-fim h3{color:#a6f0c4;margin-bottom:8px}
+  .trilha-fim a.btn{display:inline-block;margin-top:8px;background:var(--verde);color:#05230f;text-decoration:none;font-weight:bold;padding:11px 20px;border-radius:10px}
+  .trilha-fim a.btn.off{background:#1f2d45;color:#7d8aa0;pointer-events:none}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:50;align-items:center;justify-content:center;padding:16px}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--fundo2);border:1px solid var(--ambar);border-radius:14px;padding:20px;max-width:420px;text-align:center}
+  .modal p{margin-bottom:14px}
+  .modal button{background:var(--ambar);color:#2b1a00;border:none;border-radius:8px;padding:9px 16px;font-weight:bold}
+  .rodape{text-align:center;color:var(--cinza);font-size:.8rem;margin-top:24px}
+</style>
+</head>
+<body>
+<header>
+  <div class="selo">Farol da Tempestade · Física 9º ano · CCF</div>
+  <h1>📖 Leitura Guiada — Subindo o Farol</h1>
+  <p>Cap. 12 Óptica · Cap. 14 Eletrostática · Callis Física 9</p>
+</header>
+
+<div class="wrap">
+  <nav class="barra-nav" id="nav">
+    <a class="on" href="leitura-guiada.html">📖 Leitura Guiada</a>
+    <a href="quiz.html" data-etapa="quiz">🎯 Quiz</a>
+    <a href="resumo.html" data-etapa="resumo">🗺️ Resumo</a>
+    <a href="simulado.html" data-etapa="simulado">📝 Simulado</a>
+    <a href="index.html">🏠 Início</a>
+  </nav>
+
+  <div class="intro">
+    <h2>🗼 Noite de tempestade no farol</h2>
+    <p>Você é o(a) novo(a) guardião(ã) de um farol. Lá embaixo, a lanterna precisa brilhar para os navios (isso é <b style="color:var(--ambar)">Óptica</b>). Lá no alto, a tempestade carrega o céu de cargas elétricas e o para-raio espera (isso é <b style="color:var(--ciano)">Eletrostática</b>). A sua missão é subir os <b>12 andares</b> da torre, um de cada vez.</p>
+    <div class="torre" id="torre"></div>
+    <ol>
+      <li>Leia o andar com calma (tudo aqui vem do seu livro).</li>
+      <li>Responda as 3 perguntas <b>escrevendo</b> com as suas palavras (não vale copiar o texto).</li>
+      <li>Clique em <b>Conferir</b>: aparece a resposta-modelo e uma autoavaliação Sim/Não.</li>
+      <li>Com os 12 andares conferidos e a autoavaliação respondida, o <b>🎯 Quiz destrava</b>.</li>
+    </ol>
+    <div class="legenda"><span class="lg-c12">🔦 Andares 1–8 · Torre da Luz (Cap. 12 Óptica)</span><span class="lg-c14">⚡ Andares 9–12 · Topo da Tempestade (Cap. 14 Eletrostática)</span></div>
+  </div>
+
+  <div class="painel">
+    <span id="salvo">💾 Progresso salvo automaticamente.</span>
+    <div class="btns">
+      <button class="mini" onclick="exportar()">📥 Exportar</button>
+      <button class="mini" onclick="document.getElementById('imp').click()">📤 Importar</button>
+      <input type="file" id="imp" accept="application/json" style="display:none" onchange="importar(event)">
+      <button class="mini" onclick="pedirZerar()">🗑️ Zerar tudo</button>
+    </div>
+  </div>
+
+  <div id="blocos"></div>
+
+  <div class="peg">
+    <h3>⚠️ 10 Pegadinhas da Prova (não caia nelas!)</h3>
+    <ol>
+      <li><b>Reflexão difusa NÃO quer dizer “pouca luz”.</b> O que a caracteriza é a <b>desordem nas direções</b> dos raios refletidos — por isso a imagem não se forma (ou fica pouco nítida).</li>
+      <li><b>Refração = mudança de velocidade</b> ao passar de um meio para outro. O <b>desvio</b> da direção só acontece se a luz chegar <b>inclinada</b> (oblíqua); se chegar perpendicular, não desvia.</li>
+      <li><b>Infravermelho</b> fica <b>abaixo</b> do vermelho (frequência menor); <b>ultravioleta</b> fica <b>além</b> do violeta (frequência maior). Não troque!</li>
+      <li>As cores primárias <b>da luz</b> são <b>azul, vermelha e verde</b> (não é “amarelo”).</li>
+      <li>A cor de um objeto é a luz que ele <b>reflete</b>. A bola vermelha sob luz <b>verde</b> fica <b>preta</b>. E até o preto reflete um pouco de luz.</li>
+      <li><b>Câmara escura:</b> imagem <b>invertida e menor</b>; use <b>o/i = p/p’</b> (p = distância do objeto ao orifício; p’ = do orifício até a imagem).</li>
+      <li><b>Convexo:</b> imagem <b>sempre menor e direita</b> (retrovisor, porta do ônibus). <b>Côncavo:</b> a imagem <b>depende da posição</b> do objeto (dentista e maquiagem ampliam).</li>
+      <li><b>Miopia</b> → imagem <b>antes</b> da retina → lente <b>divergente</b>. <b>Hipermetropia</b> → imagem <b>depois</b> da retina → lente <b>convergente</b>.</li>
+      <li><b>Prótons não passam de um corpo para outro.</b> Eletrizar é sempre transferir <b>elétrons</b>: positivo = <b>perdeu elétrons</b> (nunca “ganhou prótons”).</li>
+      <li><b>Atrito</b> → sinais <b>opostos</b> · <b>Contato</b> → <b>mesmo sinal</b> (condutores idênticos ficam com a metade da soma) · <b>Indução</b> → sem contato, com <b>aterramento</b>, o induzido fica com sinal <b>oposto</b> ao do indutor.</li>
+    </ol>
+  </div>
+
+  <div class="cobertura">
+    <h3>🧭 Cobertura: Tópico → Andar</h3>
+    <table>
+      <thead><tr><th>Tópico</th><th>Páginas (Callis Física 9)</th><th>Andar</th></tr></thead>
+      <tbody>
+        <tr><td>Óptica e a natureza da luz; espectro visível; infravermelho e ultravioleta; Herschel; Óptica física × geométrica; mono/policromática; cores primárias; dualidade onda-partícula</td><td>63–65</td><td>1</td></tr>
+        <tr><td>Representação da luz (raio, feixe/pincel); feixes cilíndrico paralelo, cônico convergente e cônico divergente; fontes primária e secundária</td><td>66</td><td>2</td></tr>
+        <tr><td>Fenômenos ópticos; reflexão parcial e total; reflexão regular e difusa; fibra óptica</td><td>67–68</td><td>3</td></tr>
+        <tr><td>Refração; velocidade da luz; miragens; dispersão (prisma, Newton, arco-íris); espalhamento (céu azul, pôr do sol); disco de Newton</td><td>68–70</td><td>4</td></tr>
+        <tr><td>Absorção e cor dos objetos (bola vermelha); energia absorvida; Questão invertida; meios transparentes, translúcidos e opacos</td><td>70–72</td><td>5</td></tr>
+        <tr><td>Princípios da óptica geométrica; difração; câmara escura de orifício (o/i = p/p’); sombra, umbra e penumbra; eclipses</td><td>73–78</td><td>6</td></tr>
+        <tr><td>Espelhos planos (enantiomorfismo) e esféricos (côncavo e convexo); aplicações</td><td>78–81</td><td>7</td></tr>
+        <tr><td>Lentes convergentes e divergentes; olho humano; miopia e hipermetropia; instrumentos ópticos (Síntese)</td><td>81–84, 89</td><td>8</td></tr>
+        <tr><td>Eletrostática; descoberta da eletricidade (Tales, âmbar, Gilbert, Thomson, Franklin); prótons, elétrons e nêutrons; corpo eletrizado</td><td>115–117</td><td>9</td></tr>
+        <tr><td>Carga elementar (e = 1,6 · 10⁻¹⁹ C); coulomb; quantidade de carga Q = ± n · e; exercícios de cálculo</td><td>117–118, 123</td><td>10</td></tr>
+        <tr><td>Princípios da Eletrostática (atração e repulsão; conservação das cargas); condutores, isolantes (dielétricos), semicondutores e supercondutores</td><td>119–120</td><td>11</td></tr>
+        <tr><td>Processos de eletrização: atrito, contato e indução eletrostática (aterramento); para-raio; Atividades e Síntese</td><td>120–127</td><td>12</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="revisar" id="revisar" style="display:none">
+    <h3>🔁 Para revisar antes da prova</h3>
+    <ul id="revisar-lista"></ul>
+  </div>
+
+  <div class="relatorio">
+    <h3>📊 Para os pais (resumo desta leitura)</h3>
+    <div id="rel-conteudo">Assim que o jovem aprendiz for conferindo os andares, o resumo aparece aqui.</div>
+  </div>
+
+  <div class="trilha-fim" id="trilha-fim">
+    <h3>🔒 Próxima etapa: Quiz</h3>
+    <p id="trilha-fim-txt">O Quiz destrava quando os 12 andares estiverem conferidos e a autoavaliação respondida.</p>
+    <a class="btn off" id="btn-prox" href="quiz.html">🎯 Ir para o Quiz</a>
+  </div>
+
+  <div class="rodape">Feito com carinho para o jovem aprendiz. 🗼 Boa leitura — e boa prova!</div>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <p id="modal-txt"></p>
+    <button onclick="fecharModal()" id="modal-ok">Ok</button>
+    <button class="mini" onclick="fecharModal()" id="modal-cancel" style="display:none;margin-left:8px">Cancelar</button>
+  </div>
+</div>
+
+<script>
+/* ====== TRILHA COM CADEADOS (módulo comum do kit) ====== */
+var KIT='farol_tempestade_fis9';
+var TRILHA=[
+ {id:'leitura', chave:KIT+'_leitura_v1', nome:'Leitura Guiada', arquivo:'leitura-guiada.html', emoji:'📖'},
+ {id:'quiz', chave:KIT+'_quiz_v1', nome:'Quiz', arquivo:'quiz.html', emoji:'🎯'},
+ {id:'resumo', chave:KIT+'_resumo_v1', nome:'Resumo', arquivo:'resumo.html', emoji:'🗺️'},
+ {id:'simulado', chave:KIT+'_simulado_v1', nome:'Simulado', arquivo:'simulado.html', emoji:'📝'}
+];
+function lerJSON(k){ try{ var s=localStorage.getItem(k); return s?JSON.parse(s):null; }catch(e){ return null; } }
+function trilhaLiberada(){ var t=lerJSON(KIT+'_trilha_v1'); return !!(t&&t.liberadoPelosPais); }
+function etapaConcluida(id){ var e=TRILHA.filter(function(t){return t.id===id;})[0]; var d=lerJSON(e.chave); return !!(d&&d.concluido); }
+function podeAbrir(id){ var idx=TRILHA.map(function(t){return t.id;}).indexOf(id); if(idx<=0||trilhaLiberada()) return true; return etapaConcluida(TRILHA[idx-1].id); }
+function marcarNav(){
+  var links=document.querySelectorAll('#nav a[data-etapa]');
+  for(var i=0;i<links.length;i++){ var id=links[i].getAttribute('data-etapa'); if(!podeAbrir(id)){ links[i].classList.add('lock'); links[i].textContent='🔒 '+links[i].textContent.replace('🔒 ',''); links[i].setAttribute('title','Ainda trancado'); } else { links[i].classList.remove('lock'); links[i].textContent=links[i].textContent.replace('🔒 ',''); links[i].removeAttribute('title'); } }
+}
+
+/* ====== ANDARES (conteúdo do livro Callis Física 9 — Cap. 12 Óptica, pp. 62-89; Cap. 14 Eletrostática, pp. 113-127) ====== */
+var BLOCOS = [
+ {
+  porto:"Andar 01 · Capítulo 12 · Natureza da luz", emoji:"🌈", u:"c12", parte:"🔦 Torre da Luz — Capítulo 12: Óptica (andares 1 a 8)",
+  titulo:"O que é a luz e o espectro que a gente não vê",
+  texto:[
+   "Para o livro, a <span class='destaque'>luz</span> é a parte da <b>radiação eletromagnética</b> que está no <b>espectro visível</b>: ela consegue se propagar em diferentes meios — inclusive no <b>vácuo</b> — e sensibiliza os nossos olhos, permitindo enxergar o que está ao redor. A radiação que vem do Sol tem vários tipos de radiação, inclusive alguns que não vemos. As cores que enxergamos, somadas, formam a <b>luz branca</b>.",
+   "O nosso cérebro só interpreta radiações com valores de <b>frequência</b> e de <b>comprimento de onda</b> dentro de um intervalo: existe um <b>mínimo</b> e um <b>máximo</b>. Logo abaixo do mínimo, aquém do vermelho, está a <span class='destaque'>radiação infravermelha</span> (com frequência ainda menor vêm as micro-ondas e as ondas de rádio). Logo acima do máximo, além do violeta, está a <span class='destaque'>radiação ultravioleta</span> (com frequência ainda maior vêm os raios X e os raios gama).",
+   "O infravermelho é usado em <b>controles remotos</b>, celulares e alguns aparelhos médicos. O ultravioleta estimula a produção de <b>vitamina D</b>, é usado na purificação da água e em tratamentos fisioterapêuticos — mas pode causar <b>queimaduras</b> na pele, por isso o filtro solar. As radiações invisíveis foram descobertas em <b>1800</b> pelo astrônomo <b>William Herschel</b>: com um prisma, ele separou as cores da luz branca e colocou termômetros nelas. A temperatura <b>aumentava do violeta para o vermelho</b> e era ainda maior <b>além do vermelho</b>, onde não havia cor visível — ali estava a luz que ele chamou de infravermelha.",
+   "A área da Física que estuda a luz é a <span class='destaque'>Óptica</span>, dividida em <b>Óptica física</b> (investiga a <b>natureza</b> da luz) e <b>Óptica geométrica</b> (estuda a <b>propagação</b> da luz). A luz formada por um só comprimento de onda (uma cor simples) é <b>monocromática</b>; a formada por dois ou mais, como a luz branca, é <b>policromática</b>. As <b>cores primárias da luz</b> são <b>azul, vermelha e verde</b>, e misturá-las origina outras cores e tonalidades. Curiosidade: hoje se entende que a luz ora se comporta como onda, ora como partícula — a <b>dualidade onda-partícula</b> (estudada por Hertz em 1887 e descrita por Einstein em 1905).",
+   "<div class='olhar'><b>Andar 01:</b> infravermelho ⬇️ (abaixo do vermelho) · espectro visível 🌈 · ultravioleta ⬆️ (além do violeta). Cores primárias da luz: 🔵 azul · 🔴 vermelha · 🟢 verde.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Com as suas palavras: o que diferencia a luz visível da radiação infravermelha e da ultravioleta?",modelo:"As três são radiações eletromagnéticas. A luz visível é a parte que os nossos olhos e o cérebro conseguem interpretar. A infravermelha tem frequência abaixo do limite mínimo visível (aquém do vermelho) e a ultravioleta tem frequência acima do máximo (além do violeta), por isso não as enxergamos.",chk:["Disse que todas são radiações eletromagnéticas e que a luz é a parte que enxergamos?","Disse que o infravermelho fica abaixo do vermelho (frequência menor)?","Disse que o ultravioleta fica além do violeta (frequência maior)?"]},
+   {tag:"apl",q:"Um colega afirma: “O controle remoto da TV funciona com raios ultravioleta, por isso a gente não vê a luz dele”. Corrija o colega e explique por que essa radiação é invisível.",modelo:"O controle remoto usa radiação infravermelha, e não ultravioleta. Ela é invisível porque a sua frequência fica abaixo do limite mínimo que percebemos (aquém do vermelho).",chk:["Corrigi dizendo que é radiação infravermelha?","Expliquei que ela não é vista por estar fora (abaixo) do limite que o olho percebe?"]},
+   {tag:"apl",q:"Imagine que você refaça o experimento de Herschel: um termômetro na faixa violeta, outro na vermelha e um terceiro logo depois do vermelho, onde não se vê cor nenhuma. Qual termômetro deve marcar a maior temperatura? O que isso revela?",modelo:"O termômetro colocado logo depois do vermelho deve marcar a maior temperatura (a temperatura aumenta do violeta para o vermelho e é ainda maior além dele). Isso revela que ali chega uma radiação que não enxergamos: a infravermelha.",chk:["Escolhi o termômetro de depois do vermelho?","Conclui que ali existe uma radiação invisível, a infravermelha?"]}
+  ]
+ },
+ {
+  porto:"Andar 02 · Capítulo 12 · Raios, feixes e fontes", emoji:"🔦", u:"c12",
+  titulo:"Raios, feixes e as fontes de luz",
+  texto:[
+   "Para desenhar a luz, o livro usa <span class='destaque'>segmentos de reta</span>: cada um representa um <b>raio de luz</b>, e um conjunto de raios forma um <b>feixe</b> (ou <b>pincel</b>) de luz. Os feixes são classificados de três maneiras.",
+   "<ul><li><b>Feixe cilíndrico paralelo:</b> os raios andam lado a lado, paralelos — como nos canhões de luz, em alguns tipos de lanterna e nos holofotes.</li><li><b>Feixe cônico convergente:</b> os raios se aproximam até um ponto — como quando posicionamos uma lupa sob a luz do Sol (cuidado: pode aquecer e causar queimaduras!).</li><li><b>Feixe cônico divergente:</b> os raios se espalham, afastando-se — como na luz da maioria dos faróis, das velas e das lâmpadas.</li></ul>",
+   "Para enxergarmos um objeto, ele precisa <b>emitir</b> ou <b>refletir</b> luz até os nossos olhos — por isso ele é chamado de fonte de luz. Se ele produz luz, tendo <b>luz própria</b>, é uma <span class='destaque'>fonte primária</span> (ou <b>corpo luminoso</b>): o Sol e as lâmpadas elétricas acesas, por exemplo. Se apenas devolve a luz que recebeu de uma fonte primária, é uma <span class='destaque'>fonte secundária</span> (ou <b>corpo iluminado</b>): a Lua e as flores são exemplos.",
+   "<div class='olhar'><b>Andar 02:</b> paralelo ═ (raios lado a lado) · convergente ▷• (raios se encontram) · divergente •◁ (raios se espalham). Primária = tem luz própria · Secundária = só devolve luz.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Explique, com as suas palavras, a diferença entre uma fonte primária e uma fonte secundária de luz.",modelo:"A primária (corpo luminoso) fabrica a sua própria luz — é o caso do Sol. A secundária (corpo iluminado) não brilha sozinha: ela só rebate para os nossos olhos a luz que chega até ela, como acontece com a Lua.",chk:["Disse que a primária produz luz própria?","Disse que a secundária só devolve/reflete a luz que recebe?"]},
+   {tag:"apl",q:"Classifique como fonte primária ou secundária e justifique: a) uma vela acesa; b) um muro branco iluminado pelo Sol; c) a lanterna de um celular ligada.",modelo:"a) Primária: a chama produz luz própria. b) Secundária: o muro só reflete a luz do Sol que recebe. c) Primária: a lanterna ligada emite luz própria.",chk:["Classifiquei a vela e a lanterna como fontes primárias?","Classifiquei o muro como fonte secundária, porque só reflete a luz do Sol?"]},
+   {tag:"apl",q:"Que tipo de feixe aparece em cada caso? Diga como os raios se comportam: a) a luz que sai de um poste de rua; b) a luz que sai de uma garrafa de água que funciona como lupa no sol e se concentra num pontinho; c) o feixe estreito e reto de um holofote de helicóptero.",modelo:"a) Feixe cônico divergente — a luz do poste vai se abrindo para todos os lados. b) Feixe cônico convergente — a luz vai se fechando até virar um pontinho. c) Feixe cilíndrico paralelo — os raios andam juntinhos, sem abrir nem fechar.",chk:["Disse que o poste forma feixe cônico divergente (raios se espalham)?","Disse que a garrafa-lupa forma feixe cônico convergente (raios se juntam)?","Disse que o holofote forma feixe cilíndrico paralelo?"]}
+  ]
+ },
+ {
+  porto:"Andar 03 · Capítulo 12 · Reflexão", emoji:"🪞", u:"c12",
+  titulo:"A luz que volta: reflexão",
+  texto:[
+   "A luz se comporta de jeitos diferentes conforme o corpo ou o meio em que ela incide. O livro destaca três fenômenos ópticos: a <b>reflexão</b>, a <b>refração</b> e a <b>dispersão</b> (e, mais adiante, a absorção e o espalhamento). Na <span class='destaque'>reflexão</span>, o feixe de luz sofre um desvio e continua no <b>mesmo meio</b> em que se propagava, depois de bater numa superfície que separa esse meio de outro. Nos desenhos, a <b>normal</b> é a reta tracejada perpendicular à superfície.",
+   "A reflexão pode ser <b>parcial</b> — parte da luz volta para o meio 1 e outra parte entra no meio 2 (essa parte sofre refração) — ou <b>total</b>, quando <b>todo</b> o raio volta para o meio 1. A <b>fibra óptica</b> aproveita isso: fios longos e finos de vidro ou plástico levam pulsos de luz de uma ponta à outra por meio de várias reflexões totais, mesmo quando estão curvados. Ela é usada na Medicina e na transmissão de dados.",
+   "A reflexão também pode ser <span class='destaque'>regular</span> (ou especular): quando a superfície é bem <b>plana e polida</b>, ela reflete a luz de maneira <b>ordenada</b> — raios que chegam paralelos saem paralelos — e assim se forma uma imagem, como num espelho ou na superfície de um lago tranquilo.",
+   "Já quando a superfície é <b>irregular ou rugosa</b>, a luz é refletida de modo desordenado: é a <span class='destaque'>reflexão difusa</span>. Não conseguimos ver uma imagem refletida; vemos o próprio objeto. Atenção: reflexão difusa <b>não</b> significa refletir pouca luz! O que a caracteriza é a <b>desordem nas direções dos raios refletidos</b>. Uma madeira polida, por exemplo, reflete bastante luz, mas forma imagens pouco nítidas; um lago agitado também deixa de formar imagem.",
+   "<div class='olhar'><b>Andar 03:</b> parcial = parte volta, parte atravessa · total = tudo volta (fibra óptica) · regular = ordenada, forma imagem · difusa = desordenada, não forma imagem.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Reflexão difusa quer dizer que o objeto reflete pouca luz? Explique com as suas palavras.",modelo:"Não. Um objeto pode refletir muita luz e mesmo assim ter reflexão difusa. O que caracteriza a reflexão difusa é que os raios voltam em direções desordenadas (superfície irregular), por isso não se forma uma imagem nítida.",chk:["Respondi que NÃO tem a ver com refletir pouca luz?","Expliquei que o que importa é a desordem das direções dos raios refletidos?"]},
+   {tag:"apl",q:"Uma estudante vê o próprio rosto na tela preta e lisa de um celular desligado, mas não vê o rosto numa folha de papel sulfite, que é bem mais clara. Explique a diferença usando os tipos de reflexão.",modelo:"A tela lisa e polida faz reflexão regular: os raios voltam em ordem e formam a imagem do rosto. A superfície do papel é irregular, então a reflexão é difusa: os raios voltam em direções desordenadas e enxergamos o próprio papel, não uma imagem.",chk:["Disse que a tela faz reflexão regular (superfície lisa/polida) e por isso forma imagem?","Disse que o papel faz reflexão difusa (superfície irregular) e por isso não forma imagem?"]},
+   {tag:"apl",q:"Na vitrine de uma loja, você enxerga os produtos lá dentro e, ao mesmo tempo, um reflexo fraquinho do seu próprio corpo no vidro. Essa reflexão no vidro é parcial ou total? Justifique dizendo o que acontece com cada parte da luz.",modelo:"É reflexão parcial: uma parte da luz volta para o lado de fora (por isso aparece o reflexo) e a outra parte atravessa o vidro, passando para outro meio (por isso dá para ver os produtos).",chk:["Respondi que é reflexão parcial?","Expliquei que uma parte da luz volta (reflexo) e outra parte atravessa o vidro?"]}
+  ]
+ },
+ {
+  porto:"Andar 04 · Capítulo 12 · Refração, dispersão e espalhamento", emoji:"💧", u:"c12",
+  titulo:"A luz que muda de meio: refração, arco-íris e céu azul",
+  texto:[
+   "A <span class='destaque'>refração</span> acontece quando um raio de luz <b>passa de um meio para outro</b> e sofre <b>variação na sua velocidade</b>. A velocidade depende do meio: a água tem partículas, então a luz passa com mais dificuldade; o vácuo não tem nenhuma partícula, então é o meio em que a luz anda com mais facilidade e mais rapidez. No vácuo, a luz tem velocidade de cerca de <b>300 000 km/s</b>: um raio que sai do Sol, a uns 150 000 000 km, leva cerca de <b>8 minutos</b> para chegar até nós.",
+   "Ao mudar de meio, a luz pode ficar mais rápida ou mais lenta e, se chegar com <b>ângulo de incidência oblíquo</b> (inclinado), também sofre <b>desvio</b> na direção. É a refração que faz as piscinas parecerem mais rasas do que são e o lápis dentro do copo com água parecer “quebrado”. As <b>miragens</b> do asfalto em dias muito quentes também vêm daí: o ar perto do chão está mais quente, sua densidade e seu índice de refração mudam, e as camadas de ar com temperaturas diferentes funcionam como meios diferentes, causando refrações e reflexões que dão a impressão de poças d’água.",
+   "Em alguns meios, chamados <b>dispersivos</b>, o desvio depende também da frequência (da cor) da luz. A luz branca, formada por raios de várias cores, ao atravessar um <b>prisma</b>, tem cada cor desviada de um jeito diferente e sai colorida, com as cores separadas: é a <span class='destaque'>dispersão da luz</span>. <b>Isaac Newton</b>, em <b>1666</b>, mostrou isso com um prisma, formando um espectro de <b>sete cores</b>: vermelho, laranja, amarelo, verde, azul, anil e violeta. Nas gotas de água das nuvens, a dispersão forma o <b>arco-íris</b>. O <b>disco de Newton</b> faz o contrário: com as cores pintadas, girando, mostra que a luz branca é composta de várias cores.",
+   "Por fim, o <span class='destaque'>espalhamento</span>: partículas absorvem um raio de luz e o emitem em outra direção. As partículas do ar espalham com mais eficiência as luzes <b>violeta e azul</b> (espalhamento Rayleigh) — e, como os olhos percebem melhor o azul, vemos o <b>céu azul</b>. Quando o Sol está perto do horizonte, a luz percorre um caminho mais longo na atmosfera, o azul e o violeta são espalhados por mais partículas e sobram os tons de <b>amarelo e vermelho</b>: por isso o pôr do sol é avermelhado.",
+   "<div class='olhar'><b>Andar 04:</b> refração = troca de meio + troca de velocidade (desvio só se chegar inclinada) · dispersão = prisma separa as cores (arco-íris) · espalhamento = céu azul e pôr do sol avermelhado.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"O que é preciso acontecer para haver refração? E o que muda SEMPRE na luz quando ela sofre refração?",modelo:"A luz precisa passar de um meio para outro diferente. O que sempre muda é a sua velocidade (ela fica mais rápida ou mais lenta). A mudança de direção (desvio) só acontece quando a luz chega inclinada (oblíqua).",chk:["Disse que a luz precisa passar de um meio para outro?","Disse que o que sempre muda é a velocidade?","Disse que o desvio de direção só ocorre se a luz chegar inclinada?"]},
+   {tag:"apl",q:"Uma lanterna aponta um feixe exatamente perpendicular (bem “em pé”) para a superfície da água de um aquário. O feixe vai mudar de direção ao entrar na água? E a velocidade dele vai mudar? Explique.",modelo:"A direção não muda, porque a incidência é perpendicular (não é oblíqua). Mas a velocidade muda: ao entrar na água, que tem partículas, a luz passa com mais dificuldade e fica mais lenta. Ainda é refração.",chk:["Disse que a direção não muda porque a luz chegou perpendicular?","Disse que a velocidade muda (fica menor na água)?"]},
+   {tag:"apl",q:"Ao meio-dia o céu está azul, mas no fim da tarde o céu perto do horizonte fica alaranjado. Explique essa diferença usando o espalhamento.",modelo:"Ao meio-dia, o ar desvia para todo lado principalmente o azul e o violeta, e o céu fica azul. No fim da tarde, a luz do Sol entra bem deitada e precisa cruzar muito mais ar até nós; quase todo o azul se perde pelo caminho e o que sobra para chegar aos olhos são o amarelo e o vermelho.",chk:["Disse que o ar espalha mais o azul e o violeta?","Disse que no fim da tarde a luz percorre um caminho maior na atmosfera?","Disse que sobram os tons amarelos/vermelhos?"]}
+  ]
+ },
+ {
+  porto:"Andar 05 · Capítulo 12 · Absorção e meios", emoji:"🎨", u:"c12",
+  titulo:"A cor das coisas e os meios que a luz atravessa",
+  texto:[
+   "Além de ser refletido ou refratado, um raio de luz pode ser <span class='destaque'>absorvido</span> pela superfície. Muitas vezes uma parte é absorvida e outra é refletida, dependendo da frequência da luz. E aqui está a chave: <b>são os raios refletidos que determinam a cor com que enxergamos o objeto</b>. Se um objeto iluminado por luz branca reflete principalmente o verde, ele é visto verde; se reflete todas as cores, é visto <b>branco</b>; se absorve quase toda a luz, refletindo muito pouco, é visto <b>preto</b> (mesmo superfícies pretas refletem uma parte dos raios).",
+   "O livro mostra uma bola. <b>Sob luz branca</b>, ela é vermelha: absorve bem todas as cores, menos o vermelho, que é bastante refletido. <b>Sob luz monocromática vermelha</b>, continua vermelha, porque reflete esse tipo de luz. <b>Sob luz monocromática verde</b>, fica <b>preta</b>: não há luz vermelha para ser refletida e a verde é quase toda absorvida. A luz absorvida (visível ou não) pode virar <b>energia térmica</b> — é assim que o Sol aquece a Terra — e as plantas transformam energia luminosa em energia química, base da alimentação de muitos seres vivos.",
+   "Os meios também reagem de jeitos diferentes à passagem da luz. <span class='destaque'>Transparentes</span>: são atravessados total ou quase totalmente; a <b>trajetória da luz é retilínea</b> e vemos com nitidez o que está do outro lado (vidro, água limpa). <span class='destaque'>Translúcidos</span>: são atravessados <b>parcialmente</b>, a luz faz uma <b>trajetória irregular</b> (por absorção ou espalhamento) e a visão fica dificultada (neblina, papel de seda). <span class='destaque'>Opacos</span>: <b>não deixam a luz passar</b>, por absorção ou reflexão (muros, asfalto).",
+   "A classificação pode mudar com a <b>espessura</b>: se aumentarmos muito a camada de um meio transparente, ele dificulta a passagem da luz e pode se comportar como translúcido ou até opaco.",
+   "<div class='olhar'><b>Andar 05:</b> a cor = a luz REFLETIDA · branco reflete tudo · preto absorve quase tudo · transparente (nítido) → translúcido (embaçado) → opaco (nada passa).</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Com as suas palavras: o que determina a cor com que enxergamos um objeto?",modelo:"A cor depende dos raios de luz que o objeto reflete. As cores que ele absorve não chegam aos nossos olhos; as que ele reflete são as que vemos.",chk:["Disse que a cor vem da luz que o objeto REFLETE?","Disse que a luz absorvida não chega aos olhos?"]},
+   {tag:"apl",q:"Uma bandeira tem faixas verdes e brancas (vistas assim sob a luz do Sol). Num palco escuro, ela é iluminada só por uma luz monocromática vermelha. Que cor terá cada faixa? Justifique.",modelo:"A faixa verde ficará preta: ela reflete o verde e absorve as outras cores, e só está chegando luz vermelha. A faixa branca ficará vermelha: o branco reflete todas as cores, então devolve a luz vermelha que recebe.",chk:["Disse que a faixa verde fica preta, porque absorve o vermelho?","Disse que a faixa branca fica vermelha, porque reflete a luz que recebe?"]},
+   {tag:"apl",q:"Classifique cada meio como transparente, translúcido ou opaco e justifique: a) o vidro fosco do box de um banheiro; b) uma porta de madeira; c) o ar limpo de uma manhã sem neblina.",modelo:"a) Translúcido — entra claridade, mas a gente só enxerga vultos pelo vidro fosco. b) Opaco — a luz fica toda barrada pela madeira. c) Transparente — a luz cruza o ar em linha reta e dá para ver tudo bem nítido.",chk:["Classifiquei o vidro fosco como translúcido (passa luz, mas sem nitidez)?","Classifiquei a porta de madeira como opaca?","Classifiquei o ar limpo como transparente?"]}
+  ]
+ },
+ {
+  porto:"Andar 06 · Capítulo 12 · Óptica geométrica", emoji:"📦", u:"c12",
+  titulo:"Os três princípios, a câmara escura e as sombras",
+  texto:[
+   "A <b>Óptica geométrica</b> tem três princípios. 1) <span class='destaque'>Propagação retilínea</span>: em meios homogêneos e transparentes, a luz anda em linha reta, sem desvios (como os fachos que entram pelas frestas de portas e janelas). 2) <span class='destaque'>Reversibilidade dos raios</span>: para todo raio que faz um caminho, pode existir outro fazendo o mesmo caminho no sentido contrário — se a pessoa A vê a pessoa B pelo espelho, B também vê A. 3) <span class='destaque'>Independência dos raios</span>: raios que se cruzam não interferem um no outro e seguem seu caminho, como os holofotes de um palco. (Curiosidade do livro: ao passar por fendas muito pequenas, como as ranhuras de um CD, a luz pode se decompor em cores — é a <b>difração</b>.)",
+   "A <span class='destaque'>câmara escura de orifício</span> é uma caixa com um furinho por onde a luz entra e projeta uma imagem no fundo. Ela usa a propagação retilínea e a independência dos raios. A imagem sai <b>invertida e menor</b> que o objeto, mas mantém as proporções. Ela foi a precursora das câmeras fotográficas e dos projetores. A altura do objeto (<b>o</b>), a distância dele até o orifício (<b>p</b>), a distância do orifício até a imagem (<b>p’</b>) e o tamanho da imagem (<b>i</b>) se relacionam por semelhança:",
+   "<span class='formula'>o / i = p / p’</span>",
+   "No exemplo do livro, uma rosa de 30 cm a 90 cm do orifício, numa câmara de 15 cm de profundidade, forma uma imagem de 5 cm: 30/5 = 6 e 90/15 = 6.",
+   "Quando a luz encontra uma barreira, forma-se uma região com pouca ou nenhuma luz: a <span class='destaque'>sombra</span>, que existe por causa da propagação retilínea. Com uma <b>fonte extensa</b> (não puntiforme), a sombra tem uma parte mais escura, a <span class='destaque'>umbra</span>, que <b>não recebe luz direta da fonte primária</b>, e uma parte mais clara nas bordas, a <span class='destaque'>penumbra</span>, que recebe <b>só uma parte</b> da luz. Num eclipse solar, quem está na região de umbra vê o <b>eclipse total</b>, e quem está na penumbra vê o <b>eclipse parcial</b>. Detalhe: a umbra é relativa à fonte primária (o Sol); luzes artificiais ainda podem iluminar as cidades que estão nela.",
+   "<div class='olhar'><b>Andar 06:</b> retilínea · reversibilidade · independência. Câmara escura: imagem invertida e menor, o/i = p/p’. Umbra = sem luz direta (eclipse total) · Penumbra = parte da luz (eclipse parcial).</div>"
+  ],
+  perguntas:[
+   {tag:"apl",q:"Qual princípio da óptica geométrica explica cada situação? a) O motorista vê o passageiro pelo retrovisor interno, e o passageiro também vê o motorista. b) Os fachos de duas lanternas se cruzam numa barraca e cada um continua iluminando o seu alvo. c) A luz de um laser forma um ponto exatamente na direção para a qual foi apontado.",modelo:"a) Reversibilidade dos raios de luz. b) Independência dos raios de luz. c) Propagação retilínea da luz.",chk:["Associei o retrovisor à reversibilidade?","Associei as lanternas que se cruzam à independência?","Associei o laser à propagação retilínea?"]},
+   {tag:"apl",q:"Uma árvore de 4 m (400 cm) está a 10 m (1000 cm) do orifício de uma câmara escura de 25 cm de profundidade. Calcule o tamanho da imagem e diga como ela aparece.",modelo:"o/i = p/p’ → 400/i = 1000/25 → 400/i = 40 → i = 10 cm. A imagem tem 10 cm e aparece invertida (de cabeça para baixo) e menor que a árvore.",chk:["Montei o/i = p/p’ com o = 400, p = 1000 e p’ = 25?","Cheguei a i = 10 cm?","Disse que a imagem é invertida e menor?"]},
+   {tag:"apl",q:"Durante um eclipse solar, a cidade A fica na região de umbra da Lua e a cidade B fica na penumbra. O que cada cidade vê no céu? Por que as luzes dos postes da cidade A ainda podem iluminar as ruas?",modelo:"Na cidade A, que fica na umbra, o Sol some por completo: é eclipse total, pois nenhuma luz direta do Sol chega lá. Na cidade B, na penumbra, ainda chega um pedaço da luz: é eclipse parcial. A umbra só significa “sem luz do Sol”; os postes elétricos são outras fontes e continuam acendendo normalmente.",chk:["Disse que na umbra se vê eclipse total e na penumbra, eclipse parcial?","Expliquei que a umbra só não recebe luz direta do Sol, mas pode ser iluminada por outras fontes?"]}
+  ]
+ },
+ {
+  porto:"Andar 07 · Capítulo 12 · Espelhos", emoji:"🪞", u:"c12",
+  titulo:"Espelhos planos e esféricos",
+  texto:[
+   "Os espelhos têm superfície polida e lisa, por isso fazem reflexão <b>regular</b> e formam a imagem do objeto. Há dois tipos: <b>planos</b> e <b>esféricos</b>. Os <span class='destaque'>espelhos planos</span> são superfícies planas e polidas, como os espelhos de banheiro, vidros limpos e mesas bem polidas.",
+   "No espelho plano, a imagem é <b>regular, direta e simétrica</b>: tem o mesmo tamanho do objeto, e <b>a distância do objeto ao espelho é igual à distância da imagem ao espelho</b>. Ela também é <span class='destaque'>enantiomorfa</span> (do grego <i>enantios</i>, “oposto”, e <i>morphé</i>, “forma”): fica simetricamente invertida em relação a um eixo. Se você levanta a mão esquerda, a imagem mostra uma mão direita. Por isso a palavra “AMBULÂNCIA” é escrita ao contrário na frente das ambulâncias: assim ela aparece certinha no retrovisor dos outros carros.",
+   "Os <span class='destaque'>espelhos esféricos</span> vêm de uma <b>calota esférica</b>, obtida cortando uma esfera. Eles fazem os raios <b>convergirem</b> (se aproximarem) ou <b>divergirem</b> (se afastarem). A parte <b>externa</b> da calota é o espelho <b>convexo</b>; a parte <b>interna</b> é o espelho <b>côncavo</b>.",
+   "No <b>côncavo</b>, a imagem pode ser invertida ou direita, maior, menor ou do mesmo tamanho: <b>depende da posição do objeto</b>. Espelhos de dentista e de maquiagem são côncavos, pois ampliam a imagem e mostram detalhes. No <b>convexo</b>, a imagem é <b>sempre menor e direita</b> (e virtual, segundo a Síntese), e o espelho <b>aumenta o campo de visão</b>: são convexos os espelhos perto da porta de saída dos ônibus e os retrovisores laterais.",
+   "<div class='olhar'><b>Andar 07:</b> plano = mesmo tamanho, mesma distância, enantiomorfo · côncavo (parte de dentro) = depende da posição, pode ampliar · convexo (parte de fora) = sempre menor e direita, mais campo de visão.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Com as suas palavras, compare as imagens formadas por um espelho côncavo e por um espelho convexo.",modelo:"O côncavo muda de comportamento conforme onde o objeto está: às vezes amplia, às vezes diminui, às vezes vira a imagem de cabeça para baixo. O convexo é sempre igual: mostra tudo pequeno e em pé, mas cabe muito mais coisa nele.",chk:["Disse que no côncavo a imagem depende da posição do objeto?","Disse que no convexo a imagem é sempre menor e direita?"]},
+   {tag:"apl",q:"Você está parado(a) a 1,5 m de um espelho plano, vestindo uma camiseta com a palavra “FÍSICA”. a) A que distância de você está a sua imagem? b) Como a palavra aparece no espelho e qual característica explica isso?",modelo:"a) A imagem fica a 1,5 m atrás do espelho, então está a 3 m de mim (1,5 + 1,5). b) A palavra aparece invertida lateralmente (de trás para a frente), porque a imagem do espelho plano é enantiomorfa.",chk:["Calculei 3 m (1,5 m até o espelho + 1,5 m do espelho até a imagem)?","Disse que a palavra aparece invertida por causa do enantiomorfismo?"]},
+   {tag:"apl",q:"Escolha o tipo de espelho (plano, côncavo ou convexo) e justifique: a) um espelho na saída de uma garagem, para o motorista ver um trecho grande da calçada; b) um espelho de aumento para ver detalhes da pele; c) o espelho de corpo inteiro de um provador de roupas.",modelo:"a) Convexo: forma imagens menores e direitas e aumenta o campo de visão. b) Côncavo: pode ampliar a imagem e mostrar detalhes. c) Plano: mostra a imagem do mesmo tamanho e à mesma distância.",chk:["Escolhi convexo para a garagem (mais campo de visão)?","Escolhi côncavo para ver detalhes ampliados?","Escolhi plano para o provador (mesmo tamanho)?"]}
+  ]
+ },
+ {
+  porto:"Andar 08 · Capítulo 12 · Lentes e visão", emoji:"👁️", u:"c12",
+  titulo:"Lentes, o olho humano e os óculos",
+  texto:[
+   "As <span class='destaque'>lentes</span> são estruturas ópticas de material <b>transparente</b>, usadas em câmeras fotográficas, óculos, telescópios e projetores. Nelas, os desvios da luz acontecem por <b>refração</b>. Têm duas superfícies e são classificadas em lentes de <b>bordas finas</b> (geralmente <b>convergentes</b>) e de <b>bordas espessas</b> (geralmente <b>divergentes</b>).",
+   "Nas <b>lentes convergentes</b>, os raios que chegam paralelos ao eixo principal se aproximam até um único ponto, o <b>foco</b> da lente. Elas podem formar diferentes imagens, conforme a posição do objeto, e são usadas em projetores e lupas. As <b>lentes divergentes</b> espalham os raios, afastando-os; formam imagens <b>sempre direitas, menores e virtuais</b> e servem para aumentar o campo visual, como no <b>olho mágico</b> das portas. Segundo a Síntese, os <b>instrumentos ópticos</b> (microscópios, telescópios, lunetas) são formados pela associação de lentes e espelhos.",
+   "O <span class='destaque'>olho humano</span> tem uma parte mecânica (músculos) e uma parte óptica. Suas partes: <b>córnea</b> (protege e deixa a luz passar), <b>pupila</b> (orifício por onde a luz entra), <b>íris</b> (músculo que regula a entrada de luz, como um diafragma), <b>lente</b> (para onde os raios convergem) e <b>retina</b> (onde a imagem se forma). A lente do olho age como uma <b>lente convergente</b>. Na retina, os <b>cones</b> determinam as <b>cores</b> e os <b>bastonetes</b>, a <b>intensidade da luz</b>. Como numa câmara escura, a imagem na retina é <b>menor e invertida</b>; o nervo óptico a leva ao cérebro, que a interpreta e ajusta.",
+   "Mudanças no tamanho e na curvatura do globo ocular causam <b>distúrbios da visão</b>. Na <span class='destaque'>hipermetropia</span>, a pessoa vê bem de longe e mal de perto: a imagem se forma <b>depois da retina</b>; a correção é com <b>lentes convergentes</b>. Na <span class='destaque'>miopia</span>, a pessoa vê bem de perto e mal de longe: a imagem se forma <b>antes da retina</b>; a correção é com <b>lentes divergentes</b>.",
+   "<div class='olhar'><b>Andar 08:</b> borda fina → convergente (lupa) · borda grossa → divergente (olho mágico). Miopia: antes da retina → divergente · Hipermetropia: depois da retina → convergente.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Explique a diferença entre uma lente convergente e uma lente divergente, dizendo o que cada uma faz com os raios de luz.",modelo:"A lente convergente (geralmente de bordas finas) faz os raios paralelos se aproximarem até um ponto, o foco. A divergente (geralmente de bordas espessas) faz os raios se afastarem uns dos outros, formando imagens direitas, menores e virtuais.",chk:["Disse que a convergente aproxima os raios (até o foco)?","Disse que a divergente afasta/espalha os raios?"]},
+   {tag:"apl",q:"Um estudante lê o livro sem dificuldade, mas não consegue ler o que está escrito no quadro, lá na frente da sala. Que distúrbio ele provavelmente tem, onde a imagem se forma no olho dele e que lente corrige?",modelo:"É miopia. No olho dele, a imagem do quadro fica pronta antes de chegar à retina. Os óculos certos têm lentes divergentes.",chk:["Identifiquei miopia?","Disse que a imagem se forma antes da retina?","Disse que a correção é com lente divergente?"]},
+   {tag:"apl",q:"Uma pessoa enxerga bem as placas da estrada, mas precisa afastar o celular para conseguir ler as mensagens. Que distúrbio é esse, onde se forma a imagem e qual lente corrige? Por que a lente certa é a desse tipo?",modelo:"É hipermetropia. A imagem da tela do celular só ficaria pronta atrás da retina. Os óculos certos têm lentes convergentes, que juntam mais os raios para a imagem cair em cima da retina.",chk:["Identifiquei hipermetropia?","Disse que a imagem se forma depois da retina?","Disse que a correção é com lente convergente?"]}
+  ]
+ },
+ {
+  porto:"Andar 09 · Capítulo 14 · Eletricidade", emoji:"⚡", u:"c14", parte:"⚡ Topo da Tempestade — Capítulo 14: Eletrostática (andares 9 a 12)",
+  titulo:"De onde vem a eletricidade",
+  texto:[
+   "A <b>eletricidade</b> é uma propriedade ligada à natureza da matéria, relacionada às <b>interações entre cargas elétricas</b>, que causam os fenômenos elétricos — um raio numa tempestade é um deles. A Física divide o estudo da eletricidade em <b>eletrostática</b>, <b>eletrodinâmica</b> e <b>eletromagnetismo</b>. A <span class='ci'>eletrostática</span>, que é o nosso capítulo, estuda a interação de <b>cargas elétricas em repouso</b>.",
+   "A descoberta é atribuída a <b>Tales de Mileto</b>, no século VI a.C.: um pedaço de <b>âmbar</b>, depois de atritado, atraía pequenos objetos — como um pente de plástico que, após pentear o cabelo, atrai pedacinhos de papel. As palavras “elétron” e “eletricidade” vêm de <i>elektron</i>, que quer dizer <b>âmbar</b> em grego. O termo “eletricidade” foi adotado em <b>1600</b> por <b>William Gilbert</b>, que mostrou que o efeito não acontecia só com o âmbar. Em <b>1897</b>, <b>J. J. Thomson</b> descobriu partículas de carga negativa: os <b>elétrons</b>.",
+   "Antes disso, no século XVIII, <b>Benjamin Franklin</b> imaginou um <b>fluido elétrico</b>: quando dois corpos são atritados, um perde parte do fluido para o outro. O que <b>cede</b> fluido (fica com falta) foi chamado de <b>positivo</b>; o que <b>recebe</b> (fica com excesso), de <b>negativo</b> — nomes usados até hoje. Ele também observou que as <b>cargas totais se conservam</b> quando se redistribuem entre os corpos.",
+   "Hoje sabemos que o átomo tem <b>prótons</b> (carga positiva), <b>elétrons</b> (carga negativa) e <b>nêutrons</b> (sem carga). Os átomos tendem a ter o mesmo número de prótons e elétrons, mas a <b>transferência de elétrons</b> de um corpo para outro desequilibra isso, e os corpos ficam <span class='ci'>eletrizados</span>. Os prótons ficam no <b>núcleo</b> e <b>não</b> passam de um átomo para outro; quem se move são os elétrons, que estão livres na <b>eletrosfera</b>. Mais elétrons que prótons → corpo eletrizado <b>negativamente</b>; mais prótons que elétrons → eletrizado <b>positivamente</b>.",
+   "<div class='olhar'><b>Andar 09:</b> âmbar = <i>elektron</i> · Tales (séc. VI a.C.) → Gilbert (1600) → Franklin (séc. XVIII) → Thomson (1897, elétron). Só os ELÉTRONS se transferem!</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Por que, na eletrização, dizemos que só os elétrons passam de um corpo para outro, e não os prótons?",modelo:"Porque os prótons ficam presos no núcleo dos átomos e não conseguem passar de um átomo para outro. Os elétrons ficam na eletrosfera e estão livres para se mover, então são eles que se transferem.",chk:["Disse que os prótons ficam no núcleo e não se movem entre átomos?","Disse que os elétrons, na eletrosfera, são os que se movem?"]},
+   {tag:"apl",q:"Um corpo tinha 40 prótons e 40 elétrons. Depois de atritado, perdeu 3 elétrons. Ele ficou neutro, positivo ou negativo? Explique comparando os números.",modelo:"Ficou eletrizado positivamente: agora tem 40 prótons e 37 elétrons, ou seja, mais prótons que elétrons (faltam 3 elétrons).",chk:["Disse que ficou positivo?","Comparei: 40 prótons e 37 elétrons (mais prótons que elétrons)?"]},
+   {tag:"apl",q:"Use as ideias de Franklin e as de hoje: dois corpos são atritados e o corpo A “cede fluido elétrico” para o corpo B. Pela nomenclatura de Franklin, qual fica positivo e qual fica negativo? Explicando com elétrons, o que o corpo A perdeu?",modelo:"Pela ideia de Franklin, A (que cedeu) fica positivo e B (que recebeu) fica negativo. Hoje explicamos que A perdeu elétrons, que passaram para B.",chk:["Disse que A fica positivo e B fica negativo?","Expliquei que A perdeu elétrons (que foram para B)?"]}
+  ]
+ },
+ {
+  porto:"Andar 10 · Capítulo 14 · Carga elétrica", emoji:"🔢", u:"c14",
+  titulo:"Carga elementar e a conta Q = ± n · e",
+  texto:[
+   "Depois que o elétron foi descoberto, achava-se que ele tinha a menor carga elétrica possível. Por isso, o valor em módulo da carga de um elétron recebeu o nome de <span class='ci'>carga elementar (e)</span>. Hoje sabemos que existem partículas com carga ainda menor, como os <b>quarks</b>.",
+   "No Sistema Internacional, a carga elétrica é medida em <b>coulomb (C)</b>, em homenagem ao cientista francês Charles Augustin Coulomb. Em módulo, a carga do elétron é igual à do próton: o elétron tem <b>−1,6 · 10⁻¹⁹ C</b> e o próton, <b>+1,6 · 10⁻¹⁹ C</b>. Assim:",
+   "<span class='formula'>e = 1,6 · 10⁻¹⁹ C</span>",
+   "Um corpo eletrizado tem <b>falta</b> ou <b>excesso</b> de elétrons, e a sua carga é calculada por:",
+   "<span class='formula'>Q = ± n · e</span>",
+   "Nela, <b>Q</b> é a carga do corpo, <b>n</b> é a quantidade de elétrons em falta ou em excesso e <b>e</b> é a carga elementar. Exemplo do livro: um corpo com 700 elétrons e 500 prótons tem 200 elétrons a mais. Então Q = 200 · (−1,6 · 10⁻¹⁹) = <b>−3,2 · 10⁻¹⁷ C</b>. Com <b>excesso</b> de elétrons, a carga é <b>negativa</b>; com <b>falta</b> de elétrons (mais prótons), a carga é <b>positiva</b>.",
+   "<div class='olhar'><b>Andar 10 — passo a passo:</b> 1) compare elétrons e prótons; 2) n = a diferença; 3) sinal: sobra elétron → −, falta elétron → +; 4) multiplique n por 1,6 · 10⁻¹⁹ C.</div>"
+  ],
+  perguntas:[
+   {tag:"conc",q:"Por que o valor 1,6 · 10⁻¹⁹ C recebeu o nome de “carga elementar”? Hoje ainda pensamos que ela é a menor carga que existe?",modelo:"Quando descobriram o elétron, pensavam que não existia nada com carga menor que a dele; por isso a carga dele virou a “unidade básica”, a carga elementar. Hoje já se sabe que não é bem assim: os quarks têm carga menor.",chk:["Disse que se achava que a carga do elétron era a menor possível?","Disse que hoje se conhecem cargas menores (quarks)?"]},
+   {tag:"apl",q:"Um corpo tem 15 elétrons e 9 prótons. Calcule a carga dele e diga se é positiva ou negativa. Mostre a conta.",modelo:"Há 15 − 9 = 6 elétrons em excesso, então a carga é negativa. Q = 6 · (−1,6 · 10⁻¹⁹) = −9,6 · 10⁻¹⁹ C.",chk:["Achei n = 6 elétrons em excesso?","Disse que a carga é negativa?","Cheguei a Q = −9,6 · 10⁻¹⁹ C?"]},
+   {tag:"apl",q:"Um corpo está com carga Q = +4,8 · 10⁻¹⁸ C. Quantos elétrons estão faltando nele? Mostre como pensou.",modelo:"n = Q ÷ e = 4,8 · 10⁻¹⁸ ÷ 1,6 · 10⁻¹⁹ = 3 · 10 = 30. Faltam 30 elétrons (a carga é positiva, então é falta de elétrons).",chk:["Dividi a carga pela carga elementar?","Cheguei a 30 elétrons em falta?"]}
+  ]
+ },
+ {
+  porto:"Andar 11 · Capítulo 14 · Princípios e materiais", emoji:"🧲", u:"c14",
+  titulo:"Atração, repulsão, conservação e os materiais",
+  texto:[
+   "A Eletrostática tem dois princípios fundamentais. Pelo <span class='ci'>princípio da atração e repulsão</span>, cargas de <b>sinais opostos se atraem</b> e cargas de <b>sinais iguais se repelem</b>.",
+   "Pelo <span class='ci'>princípio da conservação das cargas</span>, em um <b>sistema eletricamente isolado</b>, a quantidade total de cargas <b>permanece constante</b>, mesmo havendo transferência de um corpo para outro. No exemplo do livro, três corpos idênticos com −4 C, 6 C e 1 C trocam cargas e terminam com 1 C cada: a carga total era 3 C antes e continua 3 C depois (−4 + 6 + 1 = 3 e 1 + 1 + 1 = 3).",
+   "As cargas se movem com mais ou menos facilidade conforme o material. Nos <span class='ci'>condutores</span>, as cargas se movimentam com relativa facilidade: <b>metais</b> (como o cobre), <b>corpos de animais</b> e <b>corpos úmidos</b> são bons condutores. Nos <span class='ci'>isolantes</span> (também chamados de <b>dielétricos</b>), o movimento é mais difícil: <b>vidro, borracha e madeira</b> são exemplos — as botas de borracha são um bom dielétrico.",
+   "Há ainda os <b>semicondutores</b>, que, em determinadas condições, se comportam como isolantes <b>ou</b> como condutores, e os <b>supercondutores</b>, que, em certas condições de temperatura, oferecem <b>pouquíssima resistência</b> à passagem de elétrons, conduzindo com eficiência extraordinária.",
+   "<div class='olhar'><b>Andar 11:</b> iguais se repelem ↔ · opostos se atraem →← · sistema isolado: a soma das cargas não muda · condutor (metal, corpo úmido) × isolante/dielétrico (vidro, borracha, madeira).</div>"
+  ],
+  perguntas:[
+   {tag:"apl",q:"Três pequenas esferas eletrizadas, X, Y e Z: X repele Y, Y atrai Z e Z é negativa. Descubra o sinal de X e de Y e explique o raciocínio.",modelo:"Como Y atrai Z, e Z é negativa, Y tem sinal oposto: Y é positiva. Como X repele Y, X tem o mesmo sinal de Y: X também é positiva.",chk:["Concluí que Y é positiva (atrai a negativa Z)?","Concluí que X é positiva (repele Y, sinais iguais)?"]},
+   {tag:"apl",q:"Num sistema eletricamente isolado, três corpos têm +5 C, −2 C e +3 C. Depois de trocarem cargas, dois deles ficam com +1 C e +4 C. Qual é a carga do terceiro? Qual princípio você usou?",modelo:"A carga total é 5 − 2 + 3 = 6 C e ela se conserva. Depois: 1 + 4 + x = 6, então x = +1 C. Usei o princípio da conservação das cargas.",chk:["Calculei a carga total de 6 C?","Achei +1 C para o terceiro corpo?","Citei o princípio da conservação das cargas?"]},
+   {tag:"apl",q:"Explique, usando condutores e isolantes, por que os fios de uma instalação elétrica costumam ser de cobre por dentro e cobertos por uma capa de borracha por fora.",modelo:"O cobre é um metal, um bom condutor: as cargas se movem nele com facilidade, então ele leva a eletricidade. A capa de borracha é isolante (dielétrica): dificulta o movimento das cargas e protege quem encosta no fio.",chk:["Disse que o cobre é condutor (metal) e por isso conduz?","Disse que a cobertura é isolante/dielétrica e protege?"]}
+  ]
+ },
+ {
+  porto:"Andar 12 · Capítulo 14 · Processos de eletrização", emoji:"🌩️", u:"c14",
+  titulo:"Atrito, contato e indução — e o para-raio no topo",
+  texto:[
+   "A eletrização acontece pela <b>transferência de elétrons</b> e pode ocorrer de três formas: por <b>atrito</b>, por <b>contato</b> ou por <b>indução</b>. Corpos neutros têm prótons e elétrons em mesma quantidade e não atraem nem repelem eletricamente outros corpos.",
+   "<span class='ci'>Atrito:</span> corpos de <b>materiais diferentes</b> são esfregados um no outro e há transferência de elétrons. O que perde elétrons fica positivo; o que ganha fica negativo. Os dois, que eram neutros, ficam com cargas de <b>mesmo valor e sinais opostos</b>. Exemplo do livro: o vidro atritado com lã perde elétrons e fica positivo; a lã fica negativa.",
+   "<span class='ci'>Contato:</span> um condutor <b>já eletrizado</b> encosta num condutor neutro; a carga total se redistribui e os dois ficam com cargas de <b>mesmo sinal</b>. Se forem do mesmo material e do mesmo tamanho (idênticos), a carga é dividida igualmente: <b>cada um fica com a metade da carga total</b> (a soma das cargas iniciais). Exemplo: A com 10e encosta em B neutro → A = 5e e B = 5e.",
+   "<span class='ci'>Indução eletrostática:</span> o condutor se eletriza <b>sem contato</b>, com ajuda de um <b>aterramento</b>. Aproximando um condutor eletrizado (o <b>indutor</b>) de um neutro (o <b>induzido</b>), os elétrons livres do induzido são atraídos ou repelidos e ele fica com uma ponta de cada sinal — mas continua neutro (só se rearranjou); se o indutor for afastado, tudo volta ao normal. Para eletrizar de verdade, liga-se o induzido à terra enquanto o indutor está perto e, depois, corta-se o aterramento. Com indutor <b>negativo</b>, elétrons do induzido fogem para o solo e ele termina <b>positivo</b>: o induzido fica com sinal <b>oposto</b> ao do indutor.",
+   "No topo do farol fica o <b>para-raio</b>, invenção de Benjamin Franklin: hastes metálicas no ponto mais alto, ligadas ao solo por cabos condutores, que oferecem às descargas elétricas um caminho mais curto e de menor resistência, protegendo pessoas e construções.",
+   "<div class='olhar'><b>Andar 12:</b> atrito → sinais OPOSTOS (mesmo valor) · contato → MESMO sinal (idênticos: metade da soma) · indução → sem contato + aterramento → sinal OPOSTO ao do indutor.</div>"
+  ],
+  perguntas:[
+   {tag:"apl",q:"Um canudo de plástico é esfregado num pedaço de papel-toalha; os dois estavam neutros. Que processo de eletrização é esse? O que se pode afirmar sobre as cargas que os dois adquirem?",modelo:"É atrito (plástico e papel são materiais diferentes). Um deles passa elétrons para o outro: quem deu elétrons vira positivo, quem recebeu vira negativo, e a quantidade de carga é a mesma nos dois — só o sinal é contrário.",chk:["Identifiquei eletrização por atrito?","Disse que as cargas têm mesmo valor e sinais opostos?"]},
+   {tag:"apl",q:"Três esferas metálicas idênticas: A tem +12 nC; B e C estão neutras. A encosta em B e se afasta; depois B encosta em C e se afasta. Qual a carga final de A, de B e de C? Mostre as contas.",modelo:"A com B: (12 + 0) ÷ 2 = 6 → A = +6 nC e B = +6 nC. B com C: (6 + 0) ÷ 2 = 3 → B = +3 nC e C = +3 nC. Final: A = +6 nC, B = +3 nC, C = +3 nC (todas positivas, mesmo sinal).",chk:["Dividi a carga ao meio no primeiro contato (A = B = +6 nC)?","Dividi de novo no segundo contato (B = C = +3 nC)?","Mantive o mesmo sinal (positivo) em todas?"]},
+   {tag:"apl",q:"Um bastão isolante carregado POSITIVAMENTE é aproximado (sem encostar) de uma esfera metálica neutra que está ligada à terra por um fio. Depois corta-se o fio e afasta-se o bastão. Que sinal a esfera terá no final? Explique o caminho dos elétrons.",modelo:"A esfera termina negativa. O bastão positivo puxa elétrons, e eles sobem do chão pelo fio até a esfera. Quando o fio é cortado, esses elétrons extras não têm como voltar e a esfera fica com sobra deles — o contrário do sinal do bastão.",chk:["Disse que a esfera fica negativa?","Expliquei que os elétrons vêm da terra para a esfera (atraídos pelo bastão positivo)?"]}
+  ]
+ }
+];
+
+
+/* ====== ESTADO E PERSISTÊNCIA ====== */
+var CHAVE=KIT+'_leitura_v1';
+var mem={};
+var estado=carregar();
+
+function carregar(){
+  try{ var s=localStorage.getItem(CHAVE); if(s) return JSON.parse(s); }catch(e){ if(mem[CHAVE]) return JSON.parse(mem[CHAVE]); }
+  return {blocos:{}};
+}
+function calcProgresso(){
+  var conf=0, chkPend=0;
+  BLOCOS.forEach(function(bloco,i){
+    var b=estado.blocos[i]; if(!b||!b.conferido) return; conf++;
+    bloco.perguntas.forEach(function(p,j){ var ep=(b.perguntas&&b.perguntas[j])||{chk:{}}; p.chk.forEach(function(pt,k){ if(!ep.chk||!ep.chk[k]) chkPend++; }); });
+  });
+  estado.progresso={conferidos:conf,total:BLOCOS.length,chkPendentes:chkPend};
+  if(conf===BLOCOS.length && chkPend===0){ if(!estado.concluido){ estado.concluido=true; estado.concluidoEm=new Date().toISOString(); } }
+  return estado.progresso;
+}
+function salvar(){
+  calcProgresso();
+  var s=JSON.stringify(estado);
+  try{ localStorage.setItem(CHAVE,s); }catch(e){ mem[CHAVE]=s; }
+  var d=new Date();
+  document.getElementById('salvo').textContent='💾 Salvo às '+d.toLocaleTimeString('pt-BR')+' de '+d.toLocaleDateString('pt-BR');
+  atualizarTrilhaFim();
+  desenharTorre();
+}
+function desenharTorre(){
+  var t=document.getElementById('torre'); if(!t) return; var h='', atual=-1;
+  for(var i=0;i<BLOCOS.length;i++){ var b=estado.blocos[i]; if(atual<0 && !(b&&b.conferido)) atual=i; }
+  BLOCOS.forEach(function(bl,i){ var b=estado.blocos[i]; var cls=bl.u==='c12'?'luz':'tem'; if(b&&b.conferido) cls+=' ok'; else if(i===atual) cls+=' at'; h+='<span class="'+cls+'" title="Andar '+(i+1)+'">'+(i+1)+'</span>'; });
+  t.innerHTML=h;
+}
+function atualizarTrilhaFim(){
+  var p=estado.progresso||calcProgresso();
+  var box=document.getElementById('trilha-fim'), txt=document.getElementById('trilha-fim-txt'), btn=document.getElementById('btn-prox');
+  var h3=box.querySelector('h3');
+  if(estado.concluido||trilhaLiberada()){
+    h3.textContent='✅ Leitura concluída — Quiz destravado!';
+    txt.textContent=estado.concluido?'Você subiu os '+BLOCOS.length+' andares do farol e respondeu a autoavaliação. Agora teste o que aprendeu.':'Trilha liberada pelos pais.';
+    btn.classList.remove('off');
+  } else {
+    h3.textContent='🔒 Próxima etapa: Quiz';
+    var faltam=p.total-p.conferidos;
+    txt.textContent=faltam>0 ? 'Destrava quando você conferir os '+p.total+' andares (faltam '+faltam+').' : 'Falta responder a autoavaliação Sim/Não de '+p.chkPendentes+' ponto(s) para destravar.';
+    btn.classList.add('off');
+  }
+  marcarNav();
+}
+function estBloco(i){ if(!estado.blocos[i]) estado.blocos[i]={aberto:i===0,conferido:false,perguntas:{}}; return estado.blocos[i]; }
+function estPerg(i,j){ var b=estBloco(i); if(!b.perguntas[j]) b.perguntas[j]={resp:'',warned:false,red:false,tentou:'',chk:{}}; return b.perguntas[j]; }
+
+/* ====== ANTICÓPIA (motor validado — Português 7º, 08/10/2026) ====== */
+function normPal(s){
+  return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/<[^>]*>/g,' ').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim().split(' ').filter(Boolean);
+}
+function maiorRun(aw,bw){
+  var bStr=' '+bw.join(' ')+' ', best=0;
+  for(var i=0;i<aw.length;i++){
+    for(var len=aw.length-i; len>0; len--){
+      var sub=aw.slice(i,i+len).join(' ');
+      if(bStr.indexOf(' '+sub+' ')>=0){ if(len>best)best=len; break; }
+    }
+  }
+  return best;
+}
+function cobertoPorRuns(aw,bw,minRun){
+  var bStr=' '+bw.join(' ')+' ', cov=new Array(aw.length).fill(false);
+  for(var i=0;i<aw.length;i++){
+    for(var len=aw.length-i; len>=minRun; len--){
+      var sub=aw.slice(i,i+len).join(' ');
+      if(bStr.indexOf(' '+sub+' ')>=0){ for(var k=i;k<i+len;k++)cov[k]=true; break; }
+    }
+  }
+  return cov.filter(Boolean).length;
+}
+function ehCopia(resp, textoBloco, pergunta){
+  var a=normPal(resp), src=normPal(textoBloco), q=normPal(pergunta);
+  if(a.length<5) return false;
+  var qStr=' '+q.join(' ')+' ', keep=new Array(a.length).fill(true);
+  for(var i=0;i<a.length;i++){
+    for(var len=a.length-i; len>=4; len--){
+      var sub=a.slice(i,i+len).join(' ');
+      if(qStr.indexOf(' '+sub+' ')>=0){ for(var k=i;k<i+len;k++)keep[k]=false; break; }
+    }
+  }
+  var af=a.filter(function(w,idx){return keep[idx];});
+  if(af.length<5) return false;
+  var run=maiorRun(af,src);
+  var cov=cobertoPorRuns(af,src,5);
+  var ratio=cov/af.length;
+  return run>=8 || ratio>0.6;
+}
+
+/* ====== RENDER ====== */
+function textoPlano(bloco){ return bloco.texto.join(' '); }
+function irBloco(i){ var el=document.getElementById('bloco'+i); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function render(){
+  var cont=document.getElementById('blocos'); cont.innerHTML='';
+  BLOCOS.forEach(function(bloco,i){
+    var b=estBloco(i);
+    if(bloco.parte){ var pt=document.createElement('div'); pt.className='parte '+bloco.u; pt.textContent=bloco.parte; cont.appendChild(pt); }
+    var div=document.createElement('div'); div.className='bloco '+bloco.u+(b.aberto?'':' travado'); div.id='bloco'+i;
+    var html='<div class="bloco-cab"><div class="num">'+(i+1)+'</div><div><div class="porto">'+bloco.porto+'</div><h3>'+bloco.emoji+' '+bloco.titulo+'</h3></div></div>';
+    if(!b.aberto){
+      html+='<div class="cadeado">🔒 Este andar abre quando você conferir o andar anterior.</div>';
+      div.innerHTML=html; cont.appendChild(div); return;
+    }
+    html+='<div class="bloco-corpo"><div class="texto">';
+    bloco.texto.forEach(function(p){ html+= (p.indexOf('<div')===0 || p.indexOf('<ul')===0 || p.indexOf('<span class=\'formula')===0 ? p : '<p>'+p+'</p>'); });
+    html+='</div>';
+    bloco.perguntas.forEach(function(p,j){
+      var ep=estPerg(i,j);
+      var tagTxt=p.tag==='conc'?'Conceito':'Aplicação';
+      html+='<div class="perg'+(ep.red?' red':'')+'" id="perg'+i+'_'+j+'">';
+      html+='<span class="tag '+p.tag+'">'+tagTxt+'</span>';
+      html+='<label for="ta'+i+'_'+j+'">'+(j+1)+'. '+p.q+'</label>';
+      html+='<textarea id="ta'+i+'_'+j+'" oninput="digitou('+i+','+j+')">'+(ep.resp||'').replace(/</g,'&lt;')+'</textarea>';
+      html+='<div class="aviso" id="av'+i+'_'+j+'"></div>';
+      html+='<div class="modelo" id="mod'+i+'_'+j+'"><span class="lab">Resposta-modelo</span><p>'+p.modelo+'</p>';
+      html+='<div class="chk" id="chk'+i+'_'+j+'"></div></div>';
+      html+='</div>';
+    });
+    html+='<button class="conferir" id="conf'+i+'" onclick="conferir('+i+')">✔️ Conferir este andar</button>';
+    html+='<div class="status-bloco" id="st'+i+'"></div>';
+    if(i<BLOCOS.length-1){ html+='<div class="prox" id="px'+i+'"></div>'; }
+    html+='</div>';
+    div.innerHTML=html;
+    cont.appendChild(div);
+  });
+  BLOCOS.forEach(function(bloco,i){
+    var b=estBloco(i);
+    if(b.aberto && b.conferido){ mostrarConferido(i); }
+    atualizarBotao(i);
+  });
+  atualizarRelatorio();
+  atualizarTrilhaFim();
+  desenharTorre();
+}
+
+function digitou(i,j){
+  var ep=estPerg(i,j);
+  ep.resp=document.getElementById('ta'+i+'_'+j).value;
+  if(ep.red){
+    var bloco=BLOCOS[i];
+    if(!ehCopia(ep.resp, textoPlano(bloco), bloco.perguntas[j].q)){
+      ep.red=false;
+      var pd=document.getElementById('perg'+i+'_'+j); if(pd) pd.classList.remove('red');
+      var av=document.getElementById('av'+i+'_'+j); if(av){av.className='aviso'; av.textContent='';}
+    }
+  }
+  atualizarBotao(i);
+  salvar();
+  atualizarRelatorio();
+}
+
+function atualizarBotao(i){
+  var b=estBloco(i); if(!b.aberto) return;
+  var btn=document.getElementById('conf'+i); if(!btn) return;
+  if(b.conferido){ btn.textContent='✔️ Andar conferido'; btn.disabled=true; return; }
+  var todas=true;
+  BLOCOS[i].perguntas.forEach(function(p,j){
+    var v=(document.getElementById('ta'+i+'_'+j)||{}).value||estPerg(i,j).resp||'';
+    if(v.trim().length<3) todas=false;
+  });
+  btn.disabled=!todas;
+}
+
+function conferir(i){
+  var bloco=BLOCOS[i], b=estBloco(i);
+  var algumBloqueado=false;
+  bloco.perguntas.forEach(function(p,j){
+    var ep=estPerg(i,j);
+    ep.resp=document.getElementById('ta'+i+'_'+j).value;
+    var av=document.getElementById('av'+i+'_'+j);
+    var copia=ehCopia(ep.resp, textoPlano(bloco), p.q);
+    if(copia){
+      if(!ep.warned || ep.resp===ep.tentou){
+        if(!ep.warned){ ep.warned=true; ep.tentou=ep.resp; }
+        av.className='aviso amarelo';
+        av.innerHTML='✋ Boa parte da sua resposta está igual ao texto. Tente <b>reescrever com as suas palavras</b> — explique como se fosse para um amigo, sem olhar o texto. Pode ficar mais curto e simples: o que vale é ser <b>SEU</b>.';
+        algumBloqueado=true;
+      } else {
+        ep.red=true;
+        av.className='aviso vermelho';
+        av.innerHTML='🔴 Esta resposta continua muito parecida com o texto. Ela foi aceita, mas ficou marcada para revisar. Se reescrever com as suas palavras, a marca some.';
+        document.getElementById('perg'+i+'_'+j).classList.add('red');
+      }
+    } else {
+      ep.red=false;
+      if(av){ av.className='aviso'; av.textContent=''; }
+      var pd=document.getElementById('perg'+i+'_'+j); if(pd) pd.classList.remove('red');
+    }
+  });
+  salvar();
+  if(algumBloqueado){
+    document.getElementById('st'+i).innerHTML='<span style="color:var(--ambar)">✍️ Reescreva as respostas marcadas em amarelo (mude o que escreveu) e clique em Conferir de novo.</span>';
+    return;
+  }
+  b.conferido=true;
+  if(i<BLOCOS.length-1){ estBloco(i+1).aberto=true; }
+  salvar();
+  render();
+  var alvo=document.getElementById('bloco'+i);
+  if(alvo) alvo.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function mostrarConferido(i){
+  var bloco=BLOCOS[i];
+  bloco.perguntas.forEach(function(p,j){
+    var ep=estPerg(i,j);
+    var mod=document.getElementById('mod'+i+'_'+j); if(mod) mod.classList.add('show');
+    if(ep.red){ var pd=document.getElementById('perg'+i+'_'+j); if(pd) pd.classList.add('red');
+      var av=document.getElementById('av'+i+'_'+j); if(av){av.className='aviso vermelho'; av.innerHTML='🔴 Resposta marcada para revisar (muito parecida com o texto). Reescreva com as suas palavras para tirar a marca.';}
+    }
+    var chk=document.getElementById('chk'+i+'_'+j); if(chk){
+      var h='<b style="font-size:.8rem;color:#a6f0c4">Confira você: a sua resposta…</b>';
+      p.chk.forEach(function(pt,k){
+        var val=ep.chk[k]||'';
+        h+='<div class="item"><span>'+pt+'</span><span class="simnao">'
+         +'<button class="sim'+(val==='sim'?' ativo':'')+'" onclick="marcarChk('+i+','+j+','+k+',\'sim\')">Sim</button>'
+         +'<button class="nao'+(val==='nao'?' ativo':'')+'" onclick="marcarChk('+i+','+j+','+k+',\'nao\')">Não</button>'
+         +'</span></div>';
+      });
+      chk.innerHTML=h;
+    }
+  });
+  atualizarStatusBloco(i);
+  var btn=document.getElementById('conf'+i); if(btn){ btn.textContent='✔️ Andar conferido'; btn.disabled=true; }
+  if(i<BLOCOS.length-1){
+    var px=document.getElementById('px'+i);
+    if(px) px.innerHTML='<a href="#bloco'+(i+1)+'" onclick="irBloco('+(i+1)+');return false;">⬆️ Subir para o próximo andar</a>';
+  }
+}
+
+function marcarChk(i,j,k,val){
+  var ep=estPerg(i,j); ep.chk[k]=val;
+  salvar(); mostrarConferido(i); atualizarStatusBloco(i); atualizarRelatorio();
+}
+
+function statusPergunta(i,j){
+  var ep=estPerg(i,j), p=BLOCOS[i].perguntas[j];
+  if(ep.red) return 'revisar';
+  var temNao=false, todasResp=true;
+  p.chk.forEach(function(pt,k){ if(ep.chk[k]==='nao') temNao=true; if(!ep.chk[k]) todasResp=false; });
+  if(temNao) return 'revisar';
+  if(!todasResp) return 'pendente';
+  return 'ok';
+}
+function atualizarStatusBloco(i){
+  var st=document.getElementById('st'+i); if(!st) return;
+  var revisar=false, pendente=false;
+  BLOCOS[i].perguntas.forEach(function(p,j){ var s=statusPergunta(i,j); if(s==='revisar')revisar=true; if(s==='pendente')pendente=true; });
+  if(revisar) st.innerHTML='<span style="color:#ffb3bf">🔁 Este andar tem pontos para revisar.</span>';
+  else if(pendente) st.innerHTML='<span style="color:var(--ambar)">📝 Responda a autoavaliação (Sim/Não) de cada pergunta.</span>';
+  else st.innerHTML='<span style="color:#a6f0c4">✅ Andar concluído com sucesso!</span>';
+  atualizarRelatorio();
+}
+
+function atualizarRelatorio(){
+  var lista=[], totalConf=0, totalRed=0, totalNao=0;
+  BLOCOS.forEach(function(bloco,i){
+    var b=estBloco(i); if(!b.conferido) return; totalConf++;
+    bloco.perguntas.forEach(function(p,j){
+      var ep=estPerg(i,j);
+      if(ep.red){ totalRed++; lista.push('Andar '+(i+1)+' ('+bloco.titulo+'): pergunta '+(j+1)+' — resposta muito parecida com o texto.'); }
+      p.chk.forEach(function(pt,k){ if(ep.chk[k]==='nao'){ totalNao++; lista.push('Andar '+(i+1)+' ('+bloco.titulo+'): revisar — “'+pt+'”'); } });
+    });
+  });
+  var rev=document.getElementById('revisar'), rl=document.getElementById('revisar-lista');
+  if(lista.length){ rev.style.display='block'; rl.innerHTML=lista.map(function(x){return '<li>'+x+'</li>';}).join(''); }
+  else { rev.style.display='none'; rl.innerHTML=''; }
+  var rc=document.getElementById('rel-conteudo');
+  rc.innerHTML='<b>Andares conferidos:</b> '+totalConf+' de '+BLOCOS.length+'.<br>'
+    +'<b>Respostas marcadas (muito parecidas com o texto):</b> '+totalRed+'.<br>'
+    +'<b>Pontos marcados como “Não” na autoavaliação:</b> '+totalNao+'.<br>'
+    +(lista.length? '<span style="color:#ffb3bf">Há '+lista.length+' ponto(s) para revisar (lista acima).</span>' : '<span style="color:#a6f0c4">Sem pontos pendentes para revisar. 👏</span>');
+}
+
+/* ====== EXPORTAR / IMPORTAR / ZERAR ====== */
+function exportar(){
+  var dados=JSON.stringify(estado,null,2);
+  var blob=new Blob([dados],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='leitura-guiada_farol-da-tempestade.json'; a.click();
+}
+function importar(ev){
+  var f=ev.target.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(){ try{ estado=JSON.parse(r.result); if(!estado.blocos) estado.blocos={}; salvar(); render(); mostrarModal('✅ Progresso importado!',false); }catch(e){ mostrarModal('❌ Arquivo inválido.',false); } };
+  r.readAsText(f);
+}
+var acaoZerar=null;
+function pedirZerar(){ acaoZerar=true; mostrarModal('Tem certeza que quer apagar TODO o progresso desta leitura? (O Quiz continua destravado se já tiver sido destravado.)',true); }
+function mostrarModal(txt,confirmar){
+  document.getElementById('modal-txt').innerHTML=txt;
+  document.getElementById('modal').classList.add('show');
+  document.getElementById('modal-cancel').style.display=confirmar?'inline-block':'none';
+  document.getElementById('modal-ok').textContent=confirmar?'Sim, apagar':'Ok';
+  document.getElementById('modal-ok').onclick=function(){ if(confirmar && acaoZerar){ var c=estado.concluido, ce=estado.concluidoEm; estado={blocos:{}}; if(c){estado.concluido=true; estado.concluidoEm=ce;} salvar(); render(); } acaoZerar=null; fecharModal(); };
+}
+function fecharModal(){ document.getElementById('modal').classList.remove('show'); }
+
+render();
+
+</script>
+</body>
+</html>
